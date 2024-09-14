@@ -1,0 +1,61 @@
+#+Title: Étlap Readme
+#+Startup: showeverything
+#+Options: toc:2
+
+* Tartalom jegyzék :toc:
+- [[#étlap-weboldal][Étlap Weboldal]]
+  - [[#működése][Működése]]
+  - [[#funkciók][Funkciók]]
+  - [[#adatok][Adatok]]
+  - [[#fejlesztői-specifikáció][Fejlesztői Specifikáció]]
+  - [[#fejlesztők][Fejlesztők]]
+
+* Étlap Weboldal
+Egy weboldal amin ki lehet választani milyen ételeket szeretne a vevő vásárolni és hozzá tudja adni egy listához amiket megtud rendelni. A rendelését a helyszínen át tudja venni.
+
+** Működése
+A vevő ki tudja választani egy listából milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit eltud küldeni szükséges adatok megadása után az étteremnek.
+
+** Funkciók
+- Ételek listája (Étlap)
+- Rendelés megtekintése
+*** Admin Funkciók:
+- Ételek hozzáadása módosítása és törlése
+- Admin felület felhasználók rendelésének megtekintésére
+
+** Adatok
+*** Rendelési adatok
+- Név
+- Email
+- Telefonszám
+- Ételek: Foreign Key Étel
+- ID: Primary Key
+
+*** Ételek adatai
+- Név
+- Leírás
+- Kép
+- Ár
+- Elkészítési idő
+- ID: Primary Key
+
+** Fejlesztői Specifikáció
+*** Frontend:
+- HTML CSS JavaScript
+- Tailwind: CSS keretrendszer
+- Vue.js: JavaScript keretrendszer
+*** Backend:
+- Go programozási nyelv
+- Gin: HTTP web keretrendszer
+- Gorm: ORM könyvtár
+*** Adatbázis:
+- SQL
+*** Verziókezelés:
+- Git
+- Github
+
+** Fejlesztők
+13.D Szoftver vegyes
+    - MiniApollo, SmarkPogany: Surmann Márk
+    - BudaLevente: Buda Levente István
+    - ocsaimark: Ócsai Márk
