@@ -1,11 +1,11 @@
 # Tartalom Jegyzék
 
-1.  [Étlap Weboldal](#orgacfafa8)
-    1.  [Működése](#org0235c9d)
-    2.  [Funkciók](#org78b9e72)
-    3.  [Adatok](#org3d96be1)
-    4.  [Fejlesztői Specifikáció](#org5efdf2d)
-    5.  [Fejlesztők](#org3792b4f)
+-  [Étlap Weboldal](#orgacfafa8)
+    -  [Működése](#org0235c9d)
+    -  [Funkciók](#org78b9e72)
+    -  [Adatok](#org3d96be1)
+    -  [Fejlesztői Specifikáció](#org5efdf2d)
+    -  [Fejlesztők](#org3792b4f)
 
 
 
@@ -100,4 +100,6 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   MiniApollo, SmarkPogany: Surmann Márk
 -   BudaLevente: Buda Levente István
 -   ocsaimark: Ócsai Márk
+
+![etlapProjektGoVue](https://github.com/user-attachments/assets/7b4b702b-75de-49f6-824d-d1b6d5348dfc)
 
