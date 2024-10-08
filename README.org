@@ -17,20 +17,23 @@ Egy weboldal amin ki lehet választani milyen ételeket szeretne a vevő vásár
 A vevő ki tudja választani egy listából milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit eltud küldeni szükséges adatok megadása után az étteremnek.
 
 ** Funkciók
-- Ételek listája (Étlap)
-- Rendelés megtekintése
+- [ ] Navigáció (Navbar)
+- [ ] Ételek listája (Étlap)
+- [ ] Rendelés megtekintése
+- [ ] Rendelés megvétele
 *** Admin Funkciók:
-- Ételek hozzáadása módosítása és törlése
-- Admin felület felhasználók rendelésének megtekintésére
+- [ ] Ételek hozzáadása módosítása és törlése
+- [ ] Admin felület felhasználók rendelésének megtekintésére
 
 ** Adatok
 *** Rendelési adatok
 - Név
 - Email
 - Telefonszám
-- Ételek: Foreign Key Étel
 - ID: Primary Key
-
+*** Kapcsoló tábla
+- Rendelés ID: Foreign Key Rendelés
+- Étel ID: Foreign Key Étel
 *** Ételek adatai
 - Név
 - Leírás
@@ -49,7 +52,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 - Gin: HTTP web keretrendszer
 - Gorm: ORM könyvtár
 *** Adatbázis:
-- SQL
+- MySQL
 *** Verziókezelés:
 - Git
 - Github

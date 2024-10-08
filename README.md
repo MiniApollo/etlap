@@ -1,43 +1,43 @@
 # Tartalom Jegyzék
 
--  [Étlap Weboldal](#orgacfafa8)
-    -  [Működése](#org0235c9d)
-    -  [Funkciók](#org78b9e72)
-    -  [Adatok](#org3d96be1)
-    -  [Fejlesztői Specifikáció](#org5efdf2d)
-    -  [Fejlesztők](#org3792b4f)
+-  [Étlap Weboldal](#org7f7f720)
+    -  [Működése](#org953753c)
+    -  [Funkciók](#orgfe5793a)
+    -  [Adatok](#org6aa2253)
+    -  [Fejlesztői Specifikáció](#org1ad515a)
+    -  [Fejlesztők](#org5062dff)
 
-
-
-<a id="orgacfafa8"></a>
+<a id="org7f7f720"></a>
 
 # Étlap Weboldal
 
 Egy weboldal amin ki lehet választani milyen ételeket szeretne a vevő vásárolni és hozzá tudja adni egy listához amiket megtud rendelni. A rendelését a helyszínen át tudja venni.
 
 
-<a id="org0235c9d"></a>
+<a id="org953753c"></a>
 
 ## Működése
 
 A vevő ki tudja választani egy listából milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit eltud küldeni szükséges adatok megadása után az étteremnek.
 
 
-<a id="org78b9e72"></a>
+<a id="orgfe5793a"></a>
 
 ## Funkciók
 
--   Ételek listája (Étlap)
--   Rendelés megtekintése
+-   [ ] Navigáció (Navbar)
+-   [ ] Ételek listája (Étlap)
+-   [ ] Rendelés megtekintése
+-   [ ] Rendelés megvétele
 
 
 ### Admin Funkciók:
 
--   Ételek hozzáadása módosítása és törlése
--   Admin felület felhasználók rendelésének megtekintésére
+-   [ ] Ételek hozzáadása módosítása és törlése
+-   [ ] Admin felület felhasználók rendelésének megtekintésére
 
 
-<a id="org3d96be1"></a>
+<a id="org6aa2253"></a>
 
 ## Adatok
 
@@ -47,8 +47,13 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   Név
 -   Email
 -   Telefonszám
--   Ételek: Foreign Key Étel
 -   ID: Primary Key
+
+
+### Kapcsoló tábla
+
+-   Rendelés ID: Foreign Key Rendelés
+-   Étel ID: Foreign Key Étel
 
 
 ### Ételek adatai
@@ -61,7 +66,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   ID: Primary Key
 
 
-<a id="org5efdf2d"></a>
+<a id="org1ad515a"></a>
 
 ## Fejlesztői Specifikáció
 
@@ -82,7 +87,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 
 ### Adatbázis:
 
--   SQL
+-   MySQL
 
 
 ### Verziókezelés:
@@ -91,7 +96,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   Github
 
 
-<a id="org3792b4f"></a>
+<a id="org5062dff"></a>
 
 ## Fejlesztők
 
