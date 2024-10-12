@@ -62,7 +62,6 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   Leírás
 -   Kép
 -   Ár
--   Elkészítési idő
 -   ID: Primary Key
 
 
