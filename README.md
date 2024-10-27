@@ -1,27 +1,27 @@
 # Tartalom Jegyzék
 
--  [Étlap Weboldal](#org7f7f720)
-    -  [Működése](#org953753c)
-    -  [Funkciók](#orgfe5793a)
-    -  [Adatok](#org6aa2253)
-    -  [Fejlesztői Specifikáció](#org1ad515a)
-    -  [Fejlesztők](#org5062dff)
+-  [Étlap Weboldal](#Étlap)
+    -  [Működése](#Működése)
+    -  [Funkciók](#Funkciók)
+    -  [Adatok](#Adatok)
+    -  [Fejlesztői Specifikáció](#Fejlesztői-Specifikáció)
+    -  [Fejlesztők](#Fejlesztők)
 
-<a id="org7f7f720"></a>
+<a id="Étlap"></a>
 
 # Étlap Weboldal
 
 Egy weboldal amin ki lehet választani milyen ételeket szeretne a vevő vásárolni és hozzá tudja adni egy listához amiket megtud rendelni. A rendelését a helyszínen át tudja venni.
 
 
-<a id="org953753c"></a>
+<a id="Működése"></a>
 
 ## Működése
 
 A vevő ki tudja választani egy listából milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit eltud küldeni szükséges adatok megadása után az étteremnek.
 
 
-<a id="orgfe5793a"></a>
+<a id="Funkciók"></a>
 
 ## Funkciók
 
@@ -37,7 +37,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   [ ] Admin felület felhasználók rendelésének megtekintésére
 
 
-<a id="org6aa2253"></a>
+<a id="Adatok"></a>
 
 ## Adatok
 
@@ -65,7 +65,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   ID: Primary Key
 
 
-<a id="org1ad515a"></a>
+<a id="Fejlesztői-Specifikáció"></a>
 
 ## Fejlesztői Specifikáció
 
@@ -81,7 +81,6 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 
 -   Go programozási nyelv
 -   Gin: HTTP web keretrendszer
--   Gorm: ORM könyvtár
 
 
 ### Adatbázis:
@@ -95,7 +94,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   Github
 
 
-<a id="org5062dff"></a>
+<a id="Fejlesztők"></a>
 
 ## Fejlesztők
 
