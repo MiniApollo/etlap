@@ -1,24 +1,24 @@
-# Tartalom Jegyzék
+# Tartalomjegyzék
 
 -  [Étlap Weboldal](#Étlap)
-    -  [Működése](#Működése)
+-  [Specifikáció](#Specifikáció)
     -  [Funkciók](#Funkciók)
     -  [Adatok](#Adatok)
-    -  [Fejlesztői Specifikáció](#Fejlesztői-Specifikáció)
-    -  [Fejlesztők](#Fejlesztők)
+-  [Fejlesztői Eszközök](#Fejlesztői-Eszközök)
+-  [Fejlesztők](#Fejlesztők)
 
 <a id="Étlap"></a>
 
 # Étlap Weboldal
 
-Egy weboldal amin ki lehet választani milyen ételeket szeretne a vevő vásárolni és hozzá tudja adni egy listához amiket megtud rendelni. A rendelését a helyszínen át tudja venni.
+Egy weboldal, ahol ki lehet választani, milyen ételeket szeretne a vevő vásárolni és hozzá tudja adni egy listához, amiket meg tud rendelni. A rendelését a helyszínen át tudja venni.
 
 
-<a id="Működése"></a>
+<a id="Specifikáció"></a>
 
-## Működése
+# Specifikáció
 
-A vevő ki tudja választani egy listából milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit eltud küldeni szükséges adatok megadása után az étteremnek.
+A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit el tud küldeni szükséges adatok megadása után az étteremnek.
 
 
 <a id="Funkciók"></a>
@@ -28,12 +28,12 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   [X] Navigáció (Navbar)
 -   [ ] Ételek listája (Étlap)
 -   [ ] Rendelés megtekintése
--   [ ] Rendelés megvétele
+-   [ ] Rendelés leadása
 
 
 ### Admin Funkciók:
 
--   [ ] Ételek hozzáadása módosítása és törlése
+-   [ ] Ételek hozzáadása, módosítása és törlése
 -   [ ] Admin felület felhasználók rendelésének megtekintésére
 
 
@@ -65,31 +65,31 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 -   ID: Primary Key
 
 
-<a id="Fejlesztői-Specifikáció"></a>
+<a id="Fejlesztői-Eszközök"></a>
 
-## Fejlesztői Specifikáció
+# Fejlesztői Eszközök
 
 
-### Frontend:
+## Frontend:
 
 -   HTML CSS JavaScript
 -   Tailwind: CSS keretrendszer
 -   Vue.js: JavaScript keretrendszer
 
 
-### Backend:
+## Backend:
 
 -   Go programozási nyelv
 -   Gin: HTTP web keretrendszer
 -   Godotenv: .env változok beolvasása
 -   Go-MySQL-Driver
 
-### Adatbázis:
+## Adatbázis:
 
 -   MySQL
 
 
-### Verziókezelés:
+## Verziókezelés:
 
 -   Git
 -   Github
@@ -97,7 +97,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 
 <a id="Fejlesztők"></a>
 
-## Fejlesztők
+# Fejlesztők
 
 13.D Szoftver vegyes
 
