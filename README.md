@@ -25,7 +25,7 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 
 ## Funkciók
 
--   [ ] Navigáció (Navbar)
+-   [X] Navigáció (Navbar)
 -   [ ] Ételek listája (Étlap)
 -   [ ] Rendelés megtekintése
 -   [ ] Rendelés megvétele
@@ -81,7 +81,8 @@ A vevő ki tudja választani egy listából milyen ételeket akar vásárolni é
 
 -   Go programozási nyelv
 -   Gin: HTTP web keretrendszer
-
+-   Godotenv: .env változok beolvasása
+-   Go-MySQL-Driver
 
 ### Adatbázis:
 
