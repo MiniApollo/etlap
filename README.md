@@ -26,8 +26,8 @@ A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni �
 ## Funkciók
 
 -   [X] Navigáció (Navbar)
--   [ ] Ételek listája (Étlap)
--   [ ] Rendelés megtekintése
+-   [X] Ételek listája (Étlap)
+-   [X] Rendelés megtekintése
 -   [ ] Rendelés leadása
 
 
