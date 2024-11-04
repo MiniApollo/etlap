@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 
 const foods: any = ref([]);
+let error: any = ref();
 
 async function getAllFood() {
     // TODO: Add not found error if web server is not on
@@ -13,7 +14,10 @@ async function getAllFood() {
                 foods.value.push(food);
             }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err);
+            error.value = err
+        });
 }
 
 onMounted(() => {
@@ -27,7 +31,11 @@ onMounted(() => {
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
     <div class="text-center">
         <h1 class="text-3xl">Ételek Listája</h1>
-        <ul>
+        <h2 v-if="foods === undefined || foods.length == 0">
+            Hiba történt: <br>
+            {{ error }}
+        </h2>
+        <ul v-else>
             <li class="my-2" v-for="food in foods">
                 <h3 class="text-2xl">{{ food.Nev }}</h3>
                 <p>{{ food.Leiras }}</p>
