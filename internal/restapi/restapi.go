@@ -2,6 +2,7 @@ package restapi
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -126,7 +127,11 @@ func GetOrder(c *gin.Context) {
 }
 
 func PostOrder(c *gin.Context) {
+	// 4 adatot lementeni adatbázisba: név, email, telefonszám, ételek listája
+	// Létrehozni egy új vevőt
+	// Kapcsoló táblába berakni az új vevő ID-ét és eggyesével az ételeket
 
+	fmt.Println("Rendelés elküldve")
 }
 
 func DeleteOrder(c *gin.Context) {

@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-const basket: any = ref([]);
+const basketContent: any = ref([]);
 
 function addToBasket(food: any) {
-  basket.value.push(food);
+  basketContent.value.push(food);
   saveBasket();
 }
 
 // https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array-in-javascript
 function deleteFromBasket(index: Number) {
-  basket.value.splice(index, 1);
+  basketContent.value.splice(index, 1);
   saveBasket();
 }
 
 function saveBasket() {
-  localStorage.setItem("basket", JSON.stringify(basket.value));
+  localStorage.setItem("basketContent", JSON.stringify(basketContent.value));
 }
 
 onMounted(() => {
-  if (localStorage.getItem("basket")) {
-    // Check if basket is null
+  if (localStorage.getItem("basketContent")) {
+    // Check if basketContent is null
     // https://stackoverflow.com/questions/46915002/argument-of-type-string-null-is-not-assignable-to-parameter-of-type-string
-    basket.value = JSON.parse(localStorage.getItem("basket") || "{}");
+    basketContent.value = JSON.parse(localStorage.getItem("basketContent") || "{}");
   }
 });
 
@@ -35,11 +35,11 @@ onMounted(() => {
     <ul>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/etelek">Ételek</RouterLink>
-      <RouterLink to="/rendeles">Rendelés</RouterLink>
+      <RouterLink to="/kosar">Kosár</RouterLink>
     </ul>
   </nav>
   <main>
-    <RouterView @kosarhoz="addToBasket" @torol="deleteFromBasket" :basket="basket" />
+    <RouterView @kosarhoz="addToBasket" @torol="deleteFromBasket" :basketContent="basketContent" />
   </main>
 
 </template>

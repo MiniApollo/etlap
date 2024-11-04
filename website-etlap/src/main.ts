@@ -5,7 +5,7 @@ import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router';
 import Welcome from './components/Welcome.vue';
 import FoodList from './components/FoodList.vue';
-import Order from './components/Order.vue';
+import Basket from './components/Basket.vue';
 
 // https://router.vuejs.org/guide/
 const routes = [
@@ -13,7 +13,7 @@ const routes = [
     // https://github.com/vuejs/vue-router/issues/3110
     { path: '/', component: Welcome },
     { path: '/etelek', component: FoodList },
-    { path: '/rendeles', component: Order },
+    { path: '/kosar', component: Basket },
 ]
 
 const router = createRouter({
