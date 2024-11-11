@@ -19,9 +19,14 @@ type customer struct {
 	Telefonszam int    `json:"Telefonszam"`
 }
 
-type order struct {
+type orderRow struct {
 	VasarloID int `json:"VasarloID"`
 	EtelID    int `json:"EtelID"`
+}
+
+type order struct {
+	Customer customer `json:"Customer"`
+	Foods    []food   `json:"Foods"`
 }
 
 type food struct {
@@ -85,11 +90,11 @@ func GetAllOrders(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
 		return
 	}
-	var orders []order
+	var orders []orderRow
 
 	defer rows.Close()
 	for rows.Next() {
-		var order order
+		var order orderRow
 		if err := rows.Scan(&order.VasarloID, &order.EtelID); err != nil {
 			log.Fatal(err)
 		}
@@ -108,11 +113,11 @@ func GetOrder(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
 		return
 	}
-	var orders []order
+	var orders []orderRow
 
 	defer rows.Close()
 	for rows.Next() {
-		var order order
+		var order orderRow
 		if err := rows.Scan(&order.VasarloID, &order.EtelID); err != nil {
 			log.Fatal(err)
 		}
@@ -130,8 +135,23 @@ func PostOrder(c *gin.Context) {
 	// 4 adatot lementeni adatbázisba: név, email, telefonszám, ételek listája
 	// Létrehozni egy új vevőt
 	// Kapcsoló táblába berakni az új vevő ID-ét és eggyesével az ételeket
-
-	fmt.Println("Rendelés elküldve")
+	var newOrder order
+	if err := c.BindJSON(&newOrder); err != nil {
+		fmt.Println(err)
+		return
+	}
+	// _ ignore set variable
+	// https://stackoverflow.com/questions/27764421/what-is-underscore-comma-in-a-go-declaration
+	// Todo: Add autoincrement to VasarloID
+	_, err := Db.Exec("INSERT INTO Vasarlok (VasarloID, Nev, Email, Telefonszam) VALUES (?, ?, ?, ?)", 6, newOrder.Customer.Nev, newOrder.Customer.Email, newOrder.Customer.Telefonszam)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Todo: Add foods to rendelesek table
+	fmt.Println("Added: ")
+	fmt.Println(newOrder.Customer.Nev)
+	fmt.Println(newOrder.Foods)
+	c.IndentedJSON(http.StatusCreated, newOrder)
 }
 
 func DeleteOrder(c *gin.Context) {
