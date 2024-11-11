@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 
 const foods: any = ref([]);
-let error: any = ref();
+const error: any = ref();
 
 async function getAllFood() {
     // TODO: Add not found error if web server is not on

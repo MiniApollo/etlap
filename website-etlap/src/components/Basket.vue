@@ -2,10 +2,34 @@
 import { ref } from 'vue';
 
 // https://vuejs.org/guide/components/props
-defineProps<{
+const props = defineProps<{
     basketContent?: any[]
 }>()
 const isSubmiting = ref(false);
+// Important to use the restapi json names
+const newCustomer = ref({
+    Nev : "",
+    Email: "",
+    // TODO: Change to phone number type in input
+    Telefonszam: Number,
+});
+
+function sendOrder() {
+    // POST
+    fetch("http://localhost:8080/order", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        // Mixed Json order
+        // https://stackoverflow.com/questions/3948206/json-order-mixed-up
+        // https://stackoverflow.com/questions/17229418/jsonobject-why-jsonobject-changing-the-order-of-attributes
+        body: JSON.stringify({
+            Customer: newCustomer.value,
+            Foods: props.basketContent
+        })
+    })
+}
 
 </script>
 
@@ -27,15 +51,15 @@ const isSubmiting = ref(false);
                 <button @click="$emit('torol', index)">Töröl</button>
             </li>
         </ul>
-        <form v-else-if="isSubmiting" action="http://localhost:8080/order" method="post">
+        <form v-else-if="isSubmiting" @submit.prevent="sendOrder">
             <label for="Name">Név: </label>
-            <input type="text" id="Name" required autocomplete="off">
+            <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off">
 
             <label for="Email">Email Cím: </label>
-            <input type="email" id="Email" required autocomplete="off">
+            <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off">
 
             <label for="PhoneNumber">Telefonszám: </label>
-            <input type="number" id="PhoneNumber" required autocomplete="off">
+            <input type="number" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off">
 
             <input type="submit" value="Rendelés Küldése">
         </form>
