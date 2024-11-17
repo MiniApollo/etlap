@@ -13,10 +13,10 @@ import (
 var Db *sql.DB
 
 type customer struct {
-	VasarloID   int    `json:"VasarloID"`
-	Nev         string `json:"Nev"`
-	Email       string `json:"Email"`
-	Telefonszam int    `json:"Telefonszam"`
+	VasarloID   int64  `json:"VasarloID"` // Not needed, because of auto increment
+	Nev         string `json:"Nev" binding:"required"`
+	Email       string `json:"Email" binding:"required"`
+	Telefonszam int    `json:"Telefonszam" binding:"required"`
 }
 
 type orderRow struct {
@@ -25,16 +25,16 @@ type orderRow struct {
 }
 
 type order struct {
-	Customer customer `json:"Customer"`
-	Foods    []food   `json:"Foods"`
+	Customer customer `json:"Customer" binding:"required"`
+	Foods    []food   `json:"Foods" binding:"required"`
 }
 
 type food struct {
-	EtelID int     `json:"EtelID"`
-	Nev    string  `json:"Nev"`
-	Leiras string  `json:"Leiras"`
-	Kep    string  `json:"Kep"`
-	Ar     float64 `json:"Ar"`
+	EtelID int     `json:"EtelID" binding:"required"`
+	Nev    string  `json:"Nev" binding:"required"`
+	Leiras string  `json:"Leiras" `
+	Kep    string  `json:"Kep" `
+	Ar     float64 `json:"Ar" binding:"required"`
 }
 
 // Capital Letters mean public
@@ -135,22 +135,36 @@ func PostOrder(c *gin.Context) {
 	// 4 adatot lementeni adatbázisba: név, email, telefonszám, ételek listája
 	// Létrehozni egy új vevőt
 	// Kapcsoló táblába berakni az új vevő ID-ét és eggyesével az ételeket
+
+	// TODO: Better Error handling 
+	// Check for empty foods list
 	var newOrder order
 	if err := c.BindJSON(&newOrder); err != nil {
 		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	newCustomer, err := Db.Exec("INSERT INTO Vasarlok (Nev, Email, Telefonszam) VALUES (?, ?, ?)", newOrder.Customer.Nev, newOrder.Customer.Email, newOrder.Customer.Telefonszam)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
 	// _ ignore set variable
 	// https://stackoverflow.com/questions/27764421/what-is-underscore-comma-in-a-go-declaration
-	// Todo: Add autoincrement to VasarloID
-	_, err := Db.Exec("INSERT INTO Vasarlok (VasarloID, Nev, Email, Telefonszam) VALUES (?, ?, ?, ?)", 6, newOrder.Customer.Nev, newOrder.Customer.Email, newOrder.Customer.Telefonszam)
-	if err != nil {
-		log.Fatal(err)
+	newOrder.Customer.VasarloID, _ = newCustomer.LastInsertId()
+
+	for i, e := range newOrder.Foods {
+		_, err := Db.Exec("INSERT INTO Rendelesek (VasarloID, EtelID) VALUES (?, ?)", newOrder.Customer.VasarloID, e.EtelID)
+		if err != nil {
+			fmt.Println("Failed to insert into Rendelesek table at: ", i)
+			fmt.Println(err)
+			c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+			return
+		}
 	}
-	// Todo: Add foods to rendelesek table
-	fmt.Println("Added: ")
-	fmt.Println(newOrder.Customer.Nev)
-	fmt.Println(newOrder.Foods)
+
 	c.IndentedJSON(http.StatusCreated, newOrder)
 }
 
