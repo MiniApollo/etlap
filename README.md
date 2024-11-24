@@ -42,7 +42,7 @@ A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni �
 ## Adatok
 
 
-### Vasarlók adatai
+### Vásarlók adatai
 
 -   Név
 -   Email
@@ -52,7 +52,7 @@ A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni �
 
 ### Rendelések (Kapcsoló tábla)
 
--   Vasarlo ID: Foreign Key Rendelés
+-   Vásarló ID: Foreign Key Rendelés
 -   Étel ID: Foreign Key Étel
 
 
