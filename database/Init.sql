@@ -5,7 +5,7 @@ CREATE TABLE Vasarlok (
 	   VasarloID int NOT NULL AUTO_INCREMENT,
 	   Nev varchar(128) NOT NULL,
 	   Email varchar(128) NOT NULL,
-	   Telefonszam int NOT NULL,
+	   Telefonszam varchar(32) NOT NULL,
 	   PRIMARY KEY(VasarloID)
 );
 CREATE TABLE Etelek (
