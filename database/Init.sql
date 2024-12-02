@@ -22,8 +22,3 @@ CREATE TABLE Rendelesek (
 	   FOREIGN KEY (VasarloID) REFERENCES Vasarlok(VasarloID),
 	   FOREIGN KEY (EtelID) REFERENCES Etelek(EtelID)
 );
-
-INSERT INTO Vasarlok (Nev, Email, Telefonszam) VALUES
-("Bob Nagy", "bob@example.com", 36201234),
-("Jakab", "jakab@example.com", 12345),
-("Cecilia", "cecilia@example.com", 54321);
