@@ -29,17 +29,18 @@ onMounted(() => {
 <template>
     <!-- Fix warnings: 
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
-    <div>
+    <div class="flex justify-evenly items-center flex-col ">
         <h1 class="text-3xl">Ételek Listája</h1>
         <h2 v-if="foods === undefined || foods.length == 0">
             Hiba történt: <br>
             {{ error }}
         </h2>
         <ul v-else>
-            <li class="my-2" v-for="food in foods">
+            <!-- :style="{ 'background-image': 'url(' + food.Kep + ')'}" -->
+            <li v-for="food in foods" class="m-2 p-4 h-96 rounded-md border-black border-2">
                 <h3 class="text-2xl">{{ food.Nev }}</h3>
                 <p>{{ food.Leiras }}</p>
-                {{ food.Kep }}
+                <img :src="food.Kep" :alt="food.Nev + ' image'">
                 <p>{{ food.Ar }} Ft</p>
                 <button class="border-2 border-black" @click="$emit('kosarhoz', food)"> Kosárhoz</button>
             </li>
