@@ -29,7 +29,7 @@ onMounted(() => {
 <template>
     <!-- Fix warnings: 
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
-    <div class="text-center">
+    <div>
         <h1 class="text-3xl">Ételek Listája</h1>
         <h2 v-if="foods === undefined || foods.length == 0">
             Hiba történt: <br>
