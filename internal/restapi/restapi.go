@@ -16,7 +16,7 @@ type customer struct {
 	VasarloID   int64  `json:"VasarloID"` // Not needed, because of auto increment
 	Nev         string `json:"Nev" binding:"required"`
 	Email       string `json:"Email" binding:"required"`
-	Telefonszam int    `json:"Telefonszam" binding:"required"`
+	Telefonszam string `json:"Telefonszam" binding:"required"`
 }
 
 type orderRow struct {

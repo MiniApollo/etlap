@@ -11,7 +11,7 @@ const newCustomer = ref({
     Nev : "",
     Email: "",
     // TODO: Change to phone number type in input
-    Telefonszam: Number,
+    Telefonszam: "",
 });
 
 function sendOrder() {
@@ -59,7 +59,7 @@ function sendOrder() {
             <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off">
 
             <label for="PhoneNumber">Telefonszám: </label>
-            <input type="number" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off">
+            <input type="text" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off">
 
             <input type="submit" value="Rendelés Küldése">
         </form>
