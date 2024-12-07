@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/MiniApollo/etlap/internal/restapi"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -47,6 +48,7 @@ func main() {
 	restapi.Db = db
 
 	router := gin.Default()
+	router.Use(cors.Default())
 
 	router.GET("/food", restapi.GetAllFood)
 	router.GET("/food/:id", restapi.GetFood)
