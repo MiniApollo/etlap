@@ -2,15 +2,18 @@ package restapi
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 // https://stackoverflow.com/questions/35038864/how-to-access-global-variables
 var Db *sql.DB
+var AdminPassword string
 
 type customer struct {
 	VasarloID   int64  `json:"VasarloID"` // Not needed, because of auto increment
@@ -136,7 +139,7 @@ func PostOrder(c *gin.Context) {
 	// Létrehozni egy új vevőt
 	// Kapcsoló táblába berakni az új vevő ID-ét és eggyesével az ételeket
 
-	// TODO: Better Error handling 
+	// TODO: Better Error handling
 	// Check for empty foods list
 	var newOrder order
 	if err := c.BindJSON(&newOrder); err != nil {
@@ -206,5 +209,35 @@ func GetCustomer(c *gin.Context) {
 }
 
 func DeleteCustomer(c *gin.Context) {
+
+}
+
+func CheckAdminPassword(c *gin.Context) {
+	authHeader := c.GetHeader("Authorization")
+
+	if authHeader == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	authParts := strings.Split(authHeader, " ")
+	password, err := base64.StdEncoding.DecodeString(authParts[1])
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+
+	fmt.Println(string(password))
+	if string(password) == AdminPassword {
+		fmt.Println("Success")
+		c.JSON(http.StatusOK, gin.H{"message": "Success"})
+		return
+	}
+	fmt.Println("")
+	c.AbortWithStatus(http.StatusUnauthorized)
+	
+}
+
+func GetAdminAuth(c *gin.Context) {
 
 }

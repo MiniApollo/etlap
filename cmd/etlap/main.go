@@ -22,6 +22,7 @@ func main() {
 	if errEnv != nil {
 		log.Fatal("Error loading .env file")
 	}
+	restapi.AdminPassword = os.Getenv("ADMINPASS")
 
 	// Capture connection properties.
 	cfg := mysql.Config{
@@ -65,5 +66,6 @@ func main() {
 	router.GET("/customer/:id", restapi.GetCustomer)
 	router.DELETE("/customer/:id", restapi.DeleteCustomer)
 
+	router.GET("/admin", restapi.CheckAdminPassword, restapi.GetAdminAuth)
 	router.Run("localhost:8080")
 }
