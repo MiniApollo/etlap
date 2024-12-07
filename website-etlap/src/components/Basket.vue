@@ -53,13 +53,13 @@ function sendOrder() {
         </ul>
         <form v-else-if="isSubmiting" @submit.prevent="sendOrder">
             <label for="Name">Név: </label>
-            <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off">
+            <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off" maxlength="128">
 
             <label for="Email">Email Cím: </label>
-            <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off">
+            <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off" maxlength="128">
 
             <label for="PhoneNumber">Telefonszám: </label>
-            <input type="text" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off">
+            <input type="text" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off" maxlength="32">
 
             <input type="submit" value="Rendelés Küldése">
         </form>
