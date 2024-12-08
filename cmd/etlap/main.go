@@ -23,6 +23,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	restapi.AdminPassword = os.Getenv("ADMINPASS")
+	restapi.JwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 	// Capture connection properties.
 	cfg := mysql.Config{

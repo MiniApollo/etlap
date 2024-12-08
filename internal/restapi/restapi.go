@@ -7,13 +7,16 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // https://stackoverflow.com/questions/35038864/how-to-access-global-variables
 var Db *sql.DB
 var AdminPassword string
+var JwtSecret []byte
 
 type customer struct {
 	VasarloID   int64  `json:"VasarloID"` // Not needed, because of auto increment
@@ -217,26 +220,31 @@ func CheckAdminPassword(c *gin.Context) {
 
 	if authHeader == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
-		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 	authParts := strings.Split(authHeader, " ")
 	password, err := base64.StdEncoding.DecodeString(authParts[1])
 	if err != nil {
-		fmt.Println("Error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	fmt.Println(string(password))
-	if string(password) == AdminPassword {
-		fmt.Println("Success")
-		c.JSON(http.StatusOK, gin.H{"message": "Success"})
+	if string(password) != AdminPassword {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Wrong password"})
 		return
 	}
-	fmt.Println("")
-	c.AbortWithStatus(http.StatusUnauthorized)
-	
+	generatedToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
+	})
+
+	signedToken, err := generatedToken.SignedString(JwtSecret)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to generate token"})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"token": signedToken})
 }
+// Todo: jwt token check function
 
 func GetAdminAuth(c *gin.Context) {
 
