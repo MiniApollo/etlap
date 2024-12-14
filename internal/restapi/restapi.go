@@ -60,6 +60,11 @@ func GetAllFood(c *gin.Context) {
 		}
 		foods = append(foods, food)
 	}
+	if foods == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Empty database"})
+		return
+	}
+
 	if err := rows.Err(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -108,6 +113,15 @@ func GetAllOrders(c *gin.Context) {
 		}
 		orders = append(orders, order)
 	}
+	// Rows is not nil but rows.Err() is nil if database is empty
+	// when err := rows.Err() nil pointer created and err.Error()
+	// tries to dereference it
+	// Needed othervise nil pointer dereference
+	if orders == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Empty database"})
+		return
+	}
+
 	if err := rows.Err(); err != nil || orders == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -198,6 +212,10 @@ func GetAllCustomers(c *gin.Context) {
 			return
 		}
 		customers = append(customers, customer)
+	}
+	if customers == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Empty database"})
+		return
 	}
 	if err := rows.Err(); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
