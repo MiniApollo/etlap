@@ -28,6 +28,22 @@ function sendPassword() {
             isLoggedIn.value = false;
         })
 }
+
+function sendToken() {
+    // TODO: Admin UI
+    fetch("http://localhost:8080/admin", {
+        method: "GET",
+        headers: {
+            'Authorization': 'Basic ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
+            "Content-type": "application/json; charset=UTF-8"
+        },
+    })
+        .then(res => res.json())
+        .then(accessToken => {
+           
+        })
+}
+
 function signOut() {
     isLoggedIn.value = false;
     // Remove all saved data from sessionStorage
