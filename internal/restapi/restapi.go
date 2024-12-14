@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -56,12 +55,14 @@ func GetAllFood(c *gin.Context) {
 	for rows.Next() {
 		var food food
 		if err := rows.Scan(&food.EtelID, &food.Nev, &food.Leiras, &food.Kep, &food.Ar); err != nil {
-			log.Fatal(err)
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
 		}
 		foods = append(foods, food)
 	}
 	if err := rows.Err(); err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, foods)
@@ -102,12 +103,14 @@ func GetAllOrders(c *gin.Context) {
 	for rows.Next() {
 		var order orderRow
 		if err := rows.Scan(&order.VasarloID, &order.EtelID); err != nil {
-			log.Fatal(err)
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
 		}
 		orders = append(orders, order)
 	}
 	if err := rows.Err(); err != nil || orders == nil {
-		log.Fatal(err)
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, orders)
@@ -125,7 +128,8 @@ func GetOrder(c *gin.Context) {
 	for rows.Next() {
 		var order orderRow
 		if err := rows.Scan(&order.VasarloID, &order.EtelID); err != nil {
-			log.Fatal(err)
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
 		}
 		orders = append(orders, order)
 	}
@@ -190,12 +194,14 @@ func GetAllCustomers(c *gin.Context) {
 	for rows.Next() {
 		var customer customer
 		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam); err != nil {
-			log.Fatal(err)
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
 		}
 		customers = append(customers, customer)
 	}
 	if err := rows.Err(); err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, customers)
