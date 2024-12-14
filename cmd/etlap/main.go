@@ -52,21 +52,25 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
+	// User API
 	router.GET("/food", restapi.GetAllFood)
 	router.GET("/food/:id", restapi.GetFood)
-	router.POST("/food", restapi.PostFood)
-	router.PATCH("/food/:id", restapi.UpdateFood)
-	router.DELETE("/food/:id", restapi.DeleteFood)
-
-	router.GET("/order", restapi.GetAllOrders)
-	router.GET("/order/:id", restapi.GetOrder)
 	router.POST("/order", restapi.PostOrder)
-	router.DELETE("/order/:id", restapi.DeleteOrder)
 
-	router.GET("/customer", restapi.GetAllCustomers)
-	router.GET("/customer/:id", restapi.GetCustomer)
-	router.DELETE("/customer/:id", restapi.DeleteCustomer)
+	// Admin API
+	router.GET("/admin", restapi.CheckAdminPassword)
 
-	router.GET("/admin", restapi.CheckAdminPassword, restapi.GetAdminAuth)
+	router.POST("/food", restapi.CheckAdminToken, restapi.PostFood)
+	router.PATCH("/food/:id", restapi.CheckAdminToken, restapi.UpdateFood)
+	router.DELETE("/food/:id", restapi.CheckAdminToken, restapi.DeleteFood)
+
+	router.GET("/order", restapi.CheckAdminToken, restapi.GetAllOrders)
+	router.GET("/order/:id", restapi.CheckAdminToken, restapi.GetOrder)
+	router.DELETE("/order/:id", restapi.CheckAdminToken, restapi.DeleteOrder)
+
+	router.GET("/customer", restapi.CheckAdminToken, restapi.GetAllCustomers)
+	router.GET("/customer/:id", restapi.CheckAdminToken, restapi.GetCustomer)
+	router.DELETE("/customer/:id", restapi.CheckAdminToken, restapi.DeleteCustomer)
+
 	router.Run("localhost:8080")
 }
