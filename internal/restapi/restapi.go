@@ -248,6 +248,11 @@ func CheckAdminPassword(c *gin.Context) {
 		return
 	}
 	authParts := strings.Split(authHeader, " ")
+	if len(authParts) != 2 || authParts[0] != "Bearer" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Authorization header"})
+		return
+	}
+
 	password, err := base64.StdEncoding.DecodeString(authParts[1])
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
