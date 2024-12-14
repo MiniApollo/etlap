@@ -240,6 +240,8 @@ func DeleteCustomer(c *gin.Context) {
 
 }
 
+// https://pkg.go.dev/github.com/golang-jwt/jwt/v5#section-readme
+// https://ututuv.medium.com/building-user-authentication-and-authorisation-api-in-go-using-gin-and-gorm-93dfe38e0612
 func CheckAdminPassword(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 
