@@ -269,8 +269,55 @@ func CheckAdminPassword(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"token": signedToken})
 }
-// Todo: jwt token check function
 
-func GetAdminAuth(c *gin.Context) {
+func CheckAdminToken(c *gin.Context) {
+	authHeader := c.GetHeader("Authorization")
 
+	// c.AbortWithStatus needed for checker functions
+	if authHeader == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Authorization header is missing"})
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+	authParts := strings.Split(authHeader, " ")
+	if len(authParts) != 2 || authParts[0] != "Bearer" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Authorization header"})
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	authToken, err := base64.StdEncoding.DecodeString(authParts[1])
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	// https://pkg.go.dev/github.com/golang-jwt/jwt/v5#example-Parse-ErrorChecking
+	accessToken, err := jwt.Parse(string(authToken), func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(JwtSecret), nil
+	})
+	if err != nil || !accessToken.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{"error1": err.Error()})
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	claims, ok := accessToken.Claims.(jwt.MapClaims)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error2": err.Error()})
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	if float64(time.Now().Unix()) > claims["exp"].(float64) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "token expired"})
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	// Succesful check, go to api function
+	c.Next()
 }
