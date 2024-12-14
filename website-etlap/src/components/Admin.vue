@@ -9,7 +9,7 @@ function sendPassword() {
     fetch("http://localhost:8080/admin", {
         method: "GET",
         headers: {
-            'Authorization': 'Basic ' + btoa(password.value),
+            'Authorization': 'Bearer ' + btoa(password.value),
             "Content-type": "application/json; charset=UTF-8"
         },
     })
