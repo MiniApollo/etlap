@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 
 const password: any = ref("");
 const isLoggedIn = ref();
+const responseMessage = ref("");
 
 function sendPassword() {
     fetch("http://localhost:8080/admin", {
@@ -17,10 +18,13 @@ function sendPassword() {
             if (accessToken.token) {
                 console.log("Token: ", accessToken.token);
                 sessionStorage.setItem("adminToken", accessToken.token);
+
+                responseMessage.value = "Sikeres bejelentkezés";
                 isLoggedIn.value = true;
                 return;
             }
-            console.log("Failed to authenticate");
+            console.log("Sikertelen bejelentkezés");
+            responseMessage.value = "Sikertelen bejelentkezés";
             isLoggedIn.value = false;
         })
 }
@@ -44,9 +48,10 @@ onMounted(() => {
             <label for="adminPassword">Jelszó:</label>
             <input type="password" id="adminPassword" v-model="password" required>
             <input type="submit" value="Bejelentkezés">
+            <h3>{{ responseMessage }}</h3>
         </form>
         <div v-else-if="isLoggedIn">
-            <h3>Sikeres Bejelentkezés</h3>
+            <h3>{{ responseMessage }}</h3>
             <button @click="signOut">Kijelentkezés</button>
         </div>
     </div>
