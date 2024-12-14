@@ -46,7 +46,7 @@ type food struct {
 func GetAllFood(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Etelek")
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 	var foods []food
@@ -94,7 +94,7 @@ func DeleteFood(c *gin.Context) {
 func GetAllOrders(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Rendelesek ORDER BY VasarloID, EtelID")
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 	var orders []orderRow
@@ -236,7 +236,7 @@ func CheckAdminPassword(c *gin.Context) {
 	}
 
 	if string(password) != AdminPassword {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Wrong password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong password"})
 		return
 	}
 	generatedToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
