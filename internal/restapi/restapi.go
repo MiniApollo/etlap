@@ -225,6 +225,7 @@ func GetAllCustomers(c *gin.Context) {
 	c.JSON(http.StatusOK, customers)
 }
 
+// There are some example users, skip some IDs when using the API
 func GetCustomer(c *gin.Context) {
 	var Customer customer
 	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam)
