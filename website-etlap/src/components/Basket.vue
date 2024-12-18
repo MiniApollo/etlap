@@ -52,6 +52,8 @@ function sendOrder() {
             </li>
         </ul>
         <form v-else-if="isSubmiting" @submit.prevent="sendOrder">
+            <button @click="isSubmiting = false">Vissza</button>
+
             <label for="Name">Név: </label>
             <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off" maxlength="128">
 
