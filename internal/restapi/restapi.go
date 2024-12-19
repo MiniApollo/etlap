@@ -196,7 +196,7 @@ func DeleteOrder(c *gin.Context) {
 
 }
 
-func GetAllCustomers(c *gin.Context) {
+func GetAllCustomer(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Vasarlok")
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})

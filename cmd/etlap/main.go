@@ -68,7 +68,7 @@ func main() {
 	router.GET("/order/:id", restapi.CheckAdminToken, restapi.GetOrder)
 	router.DELETE("/order/:id", restapi.CheckAdminToken, restapi.DeleteOrder)
 
-	router.GET("/customer", restapi.CheckAdminToken, restapi.GetAllCustomers)
+	router.GET("/customer", restapi.CheckAdminToken, restapi.GetAllCustomer)
 	router.GET("/customer/:id", restapi.CheckAdminToken, restapi.GetCustomer)
 	router.DELETE("/customer/:id", restapi.CheckAdminToken, restapi.DeleteCustomer)
 
