@@ -199,7 +199,36 @@ func DeleteOrder(c *gin.Context) {
 func GetAllCustomer(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Vasarlok")
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+		return
+	}
+	var customers []customer
+
+	defer rows.Close()
+	for rows.Next() {
+		var customer customer
+		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam); err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		customers = append(customers, customer)
+	}
+	if customers == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Empty database"})
+		return
+	}
+	if err := rows.Err(); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, customers)
+}
+
+func GetAllCustomerByOrder(c *gin.Context) {
+	rows, err := Db.Query("SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID GROUP BY VasarloID")
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 	var customers []customer
