@@ -8,33 +8,40 @@ const responseMessage = ref("");
 const orders: any = ref([]);
 const customers: any = ref([]);
 
-function sendPassword() {
-    fetch("http://localhost:8080/admin", {
+async function getData() {
+    // TODO: Get all food data by customer from database with joins
+    orders.value = await getWithToken("order");
+    customers.value = await getWithToken("order","customer");
+    console.log(customers.value)
+}
+
+async function sendPassword() {
+    const response = await fetch("http://localhost:8080/admin", {
         method: "GET",
         headers: {
             'Authorization': 'Bearer ' + btoa(password.value),
             "Content-type": "application/json; charset=UTF-8"
         },
     })
-        .then(res => res.json())
-        .then(accessToken => {
-            if (accessToken.token) {
-                console.log("Token: ", accessToken.token);
-                sessionStorage.setItem("adminToken", accessToken.token);
+    password.value = "";
 
-                responseMessage.value = "Sikeres bejelentkezés";
-                isLoggedIn.value = true;
-                return;
-            }
-            console.log("Sikertelen bejelentkezés");
-            responseMessage.value = "Sikertelen bejelentkezés";
-            isLoggedIn.value = false;
-        })
-}
-async function getData() {
-    // TODO: Get all customer and food data from database with joins
-    orders.value = await getWithToken("order");
-    customers.value = await getWithToken("customer");
+    if (!response.ok) {
+        console.error(new Error(`Response status: ${response.status}`));
+    }
+
+    const accessToken = await response.json();
+    if (accessToken.token) {
+        console.log("Token: ", accessToken.token);
+        sessionStorage.setItem("adminToken", accessToken.token);
+
+        responseMessage.value = "Sikeres bejelentkezés";
+        isLoggedIn.value = true;
+        getData();
+        return;
+    }
+    console.log("Sikertelen bejelentkezés");
+    responseMessage.value = "Sikertelen bejelentkezés";
+    isLoggedIn.value = false;
 }
 
 async function getWithToken(url: String, Id: String = "") {
