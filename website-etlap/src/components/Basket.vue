@@ -10,7 +10,6 @@ const isSubmiting = ref(false);
 const newCustomer = ref({
     Nev : "",
     Email: "",
-    // TODO: Change to phone number type in input
     Telefonszam: "",
 });
 
@@ -29,6 +28,14 @@ function sendOrder() {
             Foods: props.basketContent
         })
     })
+    // TODO: 
+    // Kiüríteni a kosarat rendelés leadasása után
+    isSubmiting.value = false;
+    newCustomer.value = {
+        Nev: "",
+        Email: "",
+        Telefonszam: "",
+    };
 }
 
 </script>
