@@ -77,7 +77,7 @@ func GetFood(c *gin.Context) {
 	var food food
 	err := Db.QueryRow("SELECT * FROM Etelek WHERE EtelID = ?", c.Param("id")).Scan(&food.EtelID, &food.Nev, &food.Leiras, &food.Kep, &food.Ar)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 
@@ -133,7 +133,7 @@ func GetAllOrders(c *gin.Context) {
 func GetOrder(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Rendelesek WHERE VasarloId = ? ORDER BY VasarloID, EtelID", c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 	var orders []orderRow
@@ -148,7 +148,7 @@ func GetOrder(c *gin.Context) {
 		orders = append(orders, order)
 	}
 	if err := rows.Err(); err != nil || orders == nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 
@@ -230,7 +230,7 @@ func GetCustomer(c *gin.Context) {
 	var Customer customer
 	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 	c.JSON(http.StatusOK, Customer)
