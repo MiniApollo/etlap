@@ -89,8 +89,18 @@ onMounted(() => {
             <button @click="signOut">Kijelentkezés</button>
             <h3>Rendelések:</h3>
             <ul>
-                <li v-for="order in orders">
-                    <p>{{ order.VasarloID }}</p>
+                <li v-for="customer in customers">
+                    <ul class="m-1 p-1 border border-black">
+                        <li class="inline m-1">{{ customer.Nev }}</li>
+                        <li class="inline m-1">{{ customer.VasarloID }}</li>
+                        <li class="inline m-1">{{ customer.Email }}</li>
+                        <li class="inline m-1">{{ customer.Telefonszam }}</li>
+
+                        <!-- TODO: Food data by customer -->
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </ul>
                 </li>
             </ul>
         </div>
