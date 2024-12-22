@@ -11,9 +11,9 @@ const foodsByCustomer: any = ref([]);
 
 async function getData() {
     orders.value = await getWithToken("order");
-    customers.value = await getWithToken("order", "customer");
+    customers.value = await getWithToken("order/customer");
     for (let i = 0; i < customers.value.length; i++) {
-        foodsByCustomer.value.push(await getWithToken("order", "food/" + customers.value[i].VasarloID));
+        foodsByCustomer.value.push(await getWithToken("order/food/" + customers.value[i].VasarloID));
     }
     console.log(foodsByCustomer.value);
 }
@@ -47,9 +47,9 @@ async function sendPassword() {
     isLoggedIn.value = false;
 }
 
-async function getWithToken(url: String, Id: String = "") {
+async function getWithToken(url: String) {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    const response = await fetch("http://localhost:8080/" + url + "/" + Id, {
+    const response = await fetch("http://localhost:8080/" + url, {
         method: "GET",
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
