@@ -84,6 +84,42 @@ func GetFood(c *gin.Context) {
 	c.JSON(http.StatusOK, food)
 }
 
+func GetAllFoodByCustomer(c *gin.Context) {
+	orderRows, err := Db.Query("SELECT * FROM Rendelesek WHERE VasarloId = ? ORDER BY VasarloID, EtelID", c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+		return
+	}
+	var foods []food
+
+	defer orderRows.Close()
+	for orderRows.Next() {
+		var order orderRow
+		if err := orderRows.Scan(&order.VasarloID, &order.EtelID); err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		var food food
+		err := Db.QueryRow("SELECT * FROM Etelek WHERE EtelID = ?", order.EtelID).Scan(&food.EtelID, &food.Nev, &food.Leiras, &food.Kep, &food.Ar)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+			return
+		}
+		foods = append(foods, food)
+	}
+	if foods == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Empty database"})
+		return
+	}
+
+	if err := orderRows.Err(); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, foods)
+}
+
 func PostFood(c *gin.Context) {
 
 }
