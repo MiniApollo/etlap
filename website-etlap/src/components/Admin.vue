@@ -7,12 +7,15 @@ const responseMessage = ref("");
 
 const orders: any = ref([]);
 const customers: any = ref([]);
+const foodsByCustomer: any = ref([]);
 
 async function getData() {
-    // TODO: Get all food data by customer from database with joins
     orders.value = await getWithToken("order");
-    customers.value = await getWithToken("order","customer");
-    console.log(customers.value)
+    customers.value = await getWithToken("order", "customer");
+    for (let i = 0; i < customers.value.length; i++) {
+        foodsByCustomer.value.push(await getWithToken("order", "food/" + customers.value[i].VasarloID));
+    }
+    console.log(foodsByCustomer.value);
 }
 
 async function sendPassword() {
@@ -89,17 +92,20 @@ onMounted(() => {
             <button @click="signOut">Kijelentkezés</button>
             <h3>Rendelések:</h3>
             <ul>
-                <li v-for="customer in customers">
-                    <ul class="m-1 p-1 border border-black">
+                <li v-for="(customer, index) in customers" class="m-1 p-1 border border-black">
+                    <ul>
                         <li class="inline m-1">{{ customer.Nev }}</li>
                         <li class="inline m-1">{{ customer.VasarloID }}</li>
                         <li class="inline m-1">{{ customer.Email }}</li>
                         <li class="inline m-1">{{ customer.Telefonszam }}</li>
-
-                        <!-- TODO: Food data by customer -->
-                        <ul>
-                            <li></li>
-                        </ul>
+                    </ul>
+                    <ul>
+                        <li v-for="food in foodsByCustomer[index]">
+                            <ul>
+                                <li class="inline m-1">{{ food.Nev }}</li>
+                                <li class="inline m-1">{{ food.Ar }}</li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>
