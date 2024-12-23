@@ -6,6 +6,8 @@ CREATE TABLE Vasarlok (
 	   Nev varchar(128) NOT NULL,
 	   Email varchar(128) NOT NULL,
 	   Telefonszam varchar(32) NOT NULL,
+	   LeadasiIdo DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	   Elkeszult boolean DEFAULT FALSE NOT NULL,
 	   PRIMARY KEY(VasarloID)
 );
 CREATE TABLE Etelek (
