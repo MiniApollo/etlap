@@ -98,6 +98,7 @@ onMounted(() => {
                         <li class="inline m-1">{{ customer.VasarloID }}</li>
                         <li class="inline m-1">{{ customer.Email }}</li>
                         <li class="inline m-1">{{ customer.Telefonszam }}</li>
+                        <li class="inline m-1">{{ customer.LeadasiIdo }}</li>
                     </ul>
                     <ul>
                         <li v-for="food in foodsByCustomer[index]">
