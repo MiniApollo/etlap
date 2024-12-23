@@ -22,6 +22,8 @@ type customer struct {
 	Nev         string `json:"Nev" binding:"required"`
 	Email       string `json:"Email" binding:"required"`
 	Telefonszam string `json:"Telefonszam" binding:"required"`
+	LeadasiIdo  string `json:"LeadasiIdo"`
+	Elkeszult   bool   `json:"Elkeszult"`
 }
 
 type orderRow struct {
@@ -243,7 +245,7 @@ func GetAllCustomer(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var customer customer
-		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam); err != nil {
+		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam, &customer.LeadasiIdo, &customer.Elkeszult); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -272,7 +274,7 @@ func GetAllCustomerByOrder(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var customer customer
-		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam); err != nil {
+		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam, &customer.LeadasiIdo, &customer.Elkeszult); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -293,7 +295,7 @@ func GetAllCustomerByOrder(c *gin.Context) {
 // There are some example users, skip some IDs when using the API
 func GetCustomer(c *gin.Context) {
 	var Customer customer
-	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam)
+	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam, &Customer.LeadasiIdo, &Customer.Elkeszult)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
