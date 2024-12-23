@@ -64,6 +64,10 @@ async function getWithToken(url: String) {
     return json;
 }
 
+function orderDone(customer :any) {
+    console.log(customer);
+}
+
 function signOut() {
     isLoggedIn.value = false;
     // Remove all saved data from sessionStorage
@@ -99,6 +103,7 @@ onMounted(() => {
                         <li class="inline m-1">{{ customer.Email }}</li>
                         <li class="inline m-1">{{ customer.Telefonszam }}</li>
                         <li class="inline m-1">{{ customer.LeadasiIdo }}</li>
+                        <button @click="orderDone(customer)">Kész</button>
                     </ul>
                     <ul>
                         <li v-for="food in foodsByCustomer[index]">
