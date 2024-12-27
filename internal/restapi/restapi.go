@@ -271,7 +271,7 @@ func GetAllCustomer(c *gin.Context) {
 }
 
 func GetAllCustomerByOrder(c *gin.Context) {
-	rows, err := Db.Query("SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID GROUP BY VasarloID")
+	rows, err := Db.Query("SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID WHERE Vasarlok.Elkeszult=FALSE GROUP BY VasarloID")
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
