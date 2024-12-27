@@ -230,7 +230,14 @@ func PostOrder(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newOrder)
 }
 
-func DeleteOrder(c *gin.Context) {
+func CompleteOrder(c *gin.Context) {
+	fmt.Println(c.Param("id"))
+	_, err := Db.Exec("UPDATE Vasarlok SET Elkeszult=TRUE WHERE VasarloID=?", c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, c.Param("id"))
 
 }
 
