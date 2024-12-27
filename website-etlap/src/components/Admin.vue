@@ -64,8 +64,15 @@ async function getWithToken(url: String) {
     return json;
 }
 
-function orderDone(customer :any) {
-    console.log(customer);
+async function orderDone(customer: any) {
+    await fetch("http://localhost:8080/customer/" + customer.VasarloID, {
+        method: "PATCH",
+        headers: {
+            'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
+            "Content-type": "application/json; charset=UTF-8"
+        },
+    })
+    getData();
 }
 
 function signOut() {
