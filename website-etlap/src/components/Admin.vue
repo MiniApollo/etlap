@@ -2,19 +2,22 @@
 import { onMounted, ref } from 'vue';
 
 const password = ref("");
-const isLoggedIn = ref();
+const isLoggedIn = ref(false);
 const responseMessage = ref("");
 
 const orders: any = ref([]);
 const customers: any = ref([]);
 const foodsByCustomer: any = ref([]);
+const foods: any = ref([]);
 
 const statusMessage = ref("");
 const statusError = ref(false);
 const showCurrentOrders = ref(true);
+const isShowOrder = ref(true);
 
 async function getData() {
     orders.value = await getWithToken("order");
+    foods.value = await getWithToken("food");
 
     if (showCurrentOrders.value) {
         customers.value = await getWithToken("order/customer?isDone=false");
@@ -123,8 +126,16 @@ onMounted(() => {
             <input type="submit" value="Bejelentkezés">
             <h3>{{ responseMessage }}</h3>
         </form>
+
         <div v-else-if="isLoggedIn">
             <button @click="signOut">Kijelentkezés</button>
+            <br>
+            <button @click="isShowOrder = !isShowOrder; getData()">
+                <p v-if="!isShowOrder">Rendelések megjelenítése</p>
+                <p v-if="isShowOrder">Ételek szerkesztésének megjelenítése</p>
+            </button>
+
+            <div v-if="isShowOrder">
 
                 <button @click="showCurrentOrders = !showCurrentOrders; getData()">
                     <p v-if="showCurrentOrders">Korábbi rendelések megjelenítése</p>
@@ -160,6 +171,26 @@ onMounted(() => {
                     </li>
                 </ul>
             </div>
+
+            <div v-if="!isShowOrder">
+                <button>Új Étel hozzáadása</button>
+                <h1 class="text-3xl">Ételek Listája</h1>
+                <h2 v-if="foods === undefined || foods.length == 0">
+                    Hiba történt: <br>
+                    {{ statusMessage }}
+                </h2>
+                <ul v-else>
+                    <li v-for="food in foods" class="m-2 p-4 h-96 rounded-md border-black border-2">
+                        <h3 class="text-2xl">{{ food.Nev }}</h3>
+                        <p>{{ food.Leiras }}</p>
+                        <img :src="food.Kep" :alt="food.Nev + ' image'">
+                        <p>{{ food.Ar }} Ft</p>
+                        <button class="border-2 border-black">Módosítás</button>
+                        <button class="border-2 border-black">Törlés</button>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </template>
