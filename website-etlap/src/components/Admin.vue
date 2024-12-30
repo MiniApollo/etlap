@@ -15,12 +15,21 @@ const showCurrentOrders = ref(true);
 
 async function getData() {
     orders.value = await getWithToken("order");
-    customers.value = await getWithToken("order/customer");
+
+    if (showCurrentOrders.value) {
+        customers.value = await getWithToken("order/customer?isDone=false");
+    }
+    else {
+        customers.value = await getWithToken("order/customer?isDone=True");
+    }
+
     if (!Array.isArray(customers.value)) {
         statusMessage.value = "Nincs új rendelés";
         statusError.value = true;
         return
     }
+    statusMessage.value = "";
+    statusError.value = false;
 
     for (let i = 0; i < customers.value.length; i++) {
         foodsByCustomer.value.push(await getWithToken("order/food/" + customers.value[i].VasarloID));
@@ -75,13 +84,18 @@ async function getWithToken(url: String) {
     return json;
 }
 
-async function orderDone(customer: any) {
+async function orderDone(customer: any, isDone :boolean) {
+    console.log(isDone);
+
     await fetch("http://localhost:8080/customer/" + customer.VasarloID, {
         method: "PATCH",
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
             "Content-type": "application/json; charset=UTF-8"
         },
+        body: JSON.stringify({
+            Elkeszult: isDone,
+        })
     })
     getData();
 }
@@ -112,21 +126,28 @@ onMounted(() => {
         <div v-else-if="isLoggedIn">
             <button @click="signOut">Kijelentkezés</button>
 
-            <h3>Rendelések:</h3>
-            <h3 v-if="statusError">{{ statusMessage }}</h3>
+                <button @click="showCurrentOrders = !showCurrentOrders; getData()">
+                    <p v-if="showCurrentOrders">Korábbi rendelések megjelenítése</p>
+                    <p v-if="!showCurrentOrders">Jelenlegi rendelések megjelenítése</p>
+                </button>
 
-            <div v-else-if="!statusError">
+                <h3 v-if="showCurrentOrders">Jelenlegi Rendelések:</h3>
+                <h3 v-if="!showCurrentOrders">Korrábbi Rendelések:</h3>
                 <ul>
-                    <button @click="showCurrentOrders = !showCurrentOrders">Kész Rendelések mutatása</button>
+                    <h3 v-if="statusError && showCurrentOrders">{{ statusMessage }}</h3>
 
-                    <li v-for="(customer, index) in customers" class="m-1 p-1 border border-black">
+                    <li v-if="Array.isArray(customers)" v-for="(customer, index) in customers"
+                        class="m-1 p-1 border border-black">
                         <ul>
                             <li class="inline m-1">{{ customer.Nev }}</li>
                             <li class="inline m-1">{{ customer.VasarloID }}</li>
                             <li class="inline m-1">{{ customer.Email }}</li>
                             <li class="inline m-1">{{ customer.Telefonszam }}</li>
                             <li class="inline m-1">{{ customer.LeadasiIdo }}</li>
-                            <button @click="orderDone(customer)">Kész</button>
+                            <button @click="orderDone(customer, showCurrentOrders)">
+                                <p v-if="showCurrentOrders">Kész</p>
+                                <p v-if="!showCurrentOrders">Visszavon</p>
+                            </button>
                         </ul>
                         <ul>
                             <li v-for="food in foodsByCustomer[index]">
