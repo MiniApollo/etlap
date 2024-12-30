@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -231,14 +232,18 @@ func PostOrder(c *gin.Context) {
 }
 
 func CompleteOrder(c *gin.Context) {
-	fmt.Println(c.Param("id"))
-	_, err := Db.Exec("UPDATE Vasarlok SET Elkeszult=TRUE WHERE VasarloID=?", c.Param("id"))
+	var isDone map[string]bool
+	if err := c.BindJSON(&isDone); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err := Db.Exec("UPDATE Vasarlok SET Elkeszult=? WHERE VasarloID=?", isDone["Elkeszult"], c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, c.Param("id"))
-
 }
 
 func GetAllCustomer(c *gin.Context) {
@@ -271,7 +276,14 @@ func GetAllCustomer(c *gin.Context) {
 }
 
 func GetAllCustomerByOrder(c *gin.Context) {
-	rows, err := Db.Query("SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID WHERE Vasarlok.Elkeszult=FALSE GROUP BY VasarloID")
+	var isDoneParam string = c.DefaultQuery("isDone", "false")
+
+	isDone, err := strconv.ParseBool(isDoneParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	rows, err := Db.Query("SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID WHERE Vasarlok.Elkeszult=? GROUP BY VasarloID", isDone)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
