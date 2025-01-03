@@ -124,7 +124,19 @@ func GetAllFoodByCustomer(c *gin.Context) {
 }
 
 func PostFood(c *gin.Context) {
+	var newFood food
+	if err := c.BindJSON(&newFood); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
+	_, err := Db.Exec("INSERT INTO Etelek (Nev, Leiras, Kep, Ar) VALUES (?, ?, ?, ?)", newFood.Nev, newFood.Leiras, newFood.Kep, newFood.Ar)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	c.IndentedJSON(http.StatusCreated, newFood)
 }
 
 func UpdateFood(c *gin.Context) {
