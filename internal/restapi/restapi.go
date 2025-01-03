@@ -38,7 +38,7 @@ type order struct {
 }
 
 type food struct {
-	EtelID int     `json:"EtelID" binding:"required"`
+	EtelID int     `json:"EtelID"`
 	Nev    string  `json:"Nev" binding:"required"`
 	Leiras string  `json:"Leiras" `
 	Kep    string  `json:"Kep" `
