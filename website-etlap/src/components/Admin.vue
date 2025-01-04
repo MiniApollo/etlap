@@ -104,9 +104,15 @@ async function orderDone(customer: any, isDone: boolean) {
     getData();
 }
 
-async function postNewFood(food: any, requestType: string = "POST", etelID: String = "") {
+async function postNewFood(food: any, requestType: string = "POST", etelID: string = "") {
 
-    await fetch("http://localhost:8080/food/" + etelID, {
+    // /food and /food/ not same api endpoint
+    // automatic redirect backend
+    // https://stackoverflow.com/questions/61547014/restful-uri-trailing-slash-or-no-trailing-slash 
+    if (etelID) {
+        etelID = "/" + etelID;
+    }
+    await fetch("http://localhost:8080/food" + etelID, {
         method: requestType,
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
