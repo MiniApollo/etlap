@@ -63,7 +63,8 @@ function resetNewFood() {
                 </li>
             </ul>
         </div>
-        <form @submit.prevent="$emit('newFoodSubmit', newFood, requestType, newFood.EtelID); resetNewFood()" v-else-if="isAddNewFood">
+        <form @submit.prevent="$emit('newFoodSubmit', newFood, requestType, newFood.EtelID); resetNewFood()"
+            v-else-if="isAddNewFood">
             <label for="Name">Név: </label>
             <input type="text" id="Name" v-model="newFood.Nev" required autocomplete="off" maxlength="128">
 
