@@ -33,8 +33,8 @@ A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni �
 
 ### Admin Funkciók:
 
--   [ ] Ételek hozzáadása, módosítása és törlése
--   [ ] Admin felület felhasználók rendelésének megtekintésére
+-   [X] Ételek hozzáadása, módosítása és törlése
+-   [X] Admin felület felhasználók rendelésének megtekintésére
 
 
 <a id="Adatok"></a>
