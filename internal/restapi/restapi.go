@@ -140,11 +140,27 @@ func PostFood(c *gin.Context) {
 }
 
 func UpdateFood(c *gin.Context) {
+	var newFood food
+	if err := c.BindJSON(&newFood); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
+	_, err := Db.Exec("UPDATE Etelek SET Nev=?, Leiras=?, Kep=?, Ar=? WHERE EtelID=?", newFood.Nev, newFood.Leiras, newFood.Kep, newFood.Ar, newFood.EtelID)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	c.IndentedJSON(http.StatusCreated, newFood)
 }
 
 func DeleteFood(c *gin.Context) {
-
+	_, err := Db.Exec("DELETE FROM Etelek WHERE EtelID=?", c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	c.IndentedJSON(http.StatusCreated, c.Param("id"))
 }
 
 func GetAllOrders(c *gin.Context) {
