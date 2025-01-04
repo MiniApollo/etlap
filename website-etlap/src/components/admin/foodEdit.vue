@@ -59,7 +59,7 @@ function resetNewFood() {
                     <img :src="food.Kep" :alt="food.Nev + ' image'">
                     <p>{{ food.Ar }} Ft</p>
                     <button @click="setFormToUpdate(food)" class="border-2 border-black">Módosítás</button>
-                    <button class="border-2 border-black">Törlés</button>
+                    <button @click="$emit('deleteFood', food.EtelID)" class="border-2 border-black">Törlés</button>
                 </li>
             </ul>
         </div>

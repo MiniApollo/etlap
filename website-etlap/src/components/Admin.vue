@@ -129,6 +129,22 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
     getData();
 }
 
+async function deleteFood(EtelID: string) {
+
+    // TODO: Megerősítő ablak
+
+    // Food can't be deleted if someone ordered it
+    // becuase of foreign key in connection table
+    await fetch("http://localhost:8080/food/" + EtelID, {
+        method: "DELETE",
+        headers: {
+            'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    getData();
+}
+
 function signOut() {
     isLoggedIn.value = false;
     // Remove all saved data from sessionStorage
@@ -180,7 +196,7 @@ onMounted(() => {
             </div>
 
             <div v-else-if="!isShowOrder">
-                <FoodEdit @newFoodSubmit="postNewFood" :foods="foods" :status-message="statusMessage" />
+                <FoodEdit @delete-food="deleteFood" @newFoodSubmit="postNewFood" :foods="foods" :status-message="statusMessage" />
             </div>
 
         </div>
