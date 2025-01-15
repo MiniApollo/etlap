@@ -5,7 +5,6 @@ const foods: any = ref([]);
 const error: any = ref();
 
 async function getAllFood() {
-    // TODO: Add not found error if web server is not on
     fetch("http://localhost:8080/food")
         .then(res => res.json())
         .then(data => {

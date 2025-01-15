@@ -5,6 +5,8 @@ import { ref } from 'vue';
 const props = defineProps<{
     basketContent?: any[]
 }>()
+const emit = defineEmits(["torol", "emptyBasket"]);
+
 const isSubmiting = ref(false);
 // Important to use the restapi json names
 const newCustomer = ref({
@@ -28,14 +30,15 @@ function sendOrder() {
             Foods: props.basketContent
         })
     })
-    // TODO: 
-    // Kiüríteni a kosarat rendelés leadasása után
+    
+    emit("emptyBasket");
     isSubmiting.value = false;
     newCustomer.value = {
         Nev: "",
         Email: "",
         Telefonszam: "",
     };
+    alert("Sikeres beküldés");
 }
 
 </script>
@@ -50,6 +53,7 @@ function sendOrder() {
         </h2>
         <ul v-else-if="!isSubmiting">
             <button @click="isSubmiting = true">Tovább a leadáshoz</button>
+            <button @click="$emit('emptyBasket')">Kosár kiürítése</button>
             <li class="my-2" v-for="(food, index) in basketContent">
                 <h3 class="text-2xl">{{ food.Nev }}</h3>
                 <p>{{ food.Leiras }}</p>

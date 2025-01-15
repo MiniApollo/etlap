@@ -18,6 +18,10 @@ function saveBasket() {
   localStorage.setItem("basketContent", JSON.stringify(basketContent.value));
 }
 
+function emptyBasket() {
+    basketContent.value = [];
+}
+
 onMounted(() => {
   if (localStorage.getItem("basketContent")) {
     // Check if basketContent is null
@@ -49,7 +53,7 @@ onMounted(() => {
       </ul>
     </nav>
     <main class="pt-16">
-      <RouterView @kosarhoz="addToBasket" @torol="deleteFromBasket" :basketContent="basketContent" />
+      <RouterView @kosarhoz="addToBasket" @torol="deleteFromBasket" @empty-basket="emptyBasket" :basketContent="basketContent" />
     </main>
   </div>
 
