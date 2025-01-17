@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <!-- Fix warnings: 
+    <!-- Fix warnings:
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
     <div class="m-auto w-1/2">
         <h1 class="px-5 text-3xl">Ételek Listája</h1>

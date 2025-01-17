@@ -108,7 +108,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
 
     // /food and /food/ not same api endpoint
     // automatic redirect backend
-    // https://stackoverflow.com/questions/61547014/restful-uri-trailing-slash-or-no-trailing-slash 
+    // https://stackoverflow.com/questions/61547014/restful-uri-trailing-slash-or-no-trailing-slash
     if (etelID) {
         etelID = "/" + etelID;
     }
@@ -119,7 +119,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
             "Content-type": "application/json; charset=UTF-8"
         },
         body: JSON.stringify({
-            EtelID: Number(food.EtelID), 
+            EtelID: Number(food.EtelID),
             Nev: food.Nev,
             Leiras: food.Leiras,
             Kep: food.Kep,
