@@ -50,7 +50,14 @@ func main() {
 	restapi.Db = db
 
 	router := gin.Default()
-	router.Use(cors.Default())
+
+	// Cors
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowCredentials = true
+	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
+
+	router.Use(cors.New(config))
 
 	// User API
 	router.GET("/food", restapi.GetAllFood)
