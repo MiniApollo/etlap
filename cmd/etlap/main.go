@@ -55,6 +55,7 @@ func main() {
 	// User API
 	router.GET("/food", restapi.GetAllFood)
 	router.GET("/food/:id", restapi.GetFood)
+	router.Static("/assets", "./assets/foods/")
 	router.POST("/order", restapi.PostOrder)
 
 	// Admin API
