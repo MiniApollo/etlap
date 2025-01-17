@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { KeepAlive, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const foods: any = ref([]);
 const error: any = ref();
