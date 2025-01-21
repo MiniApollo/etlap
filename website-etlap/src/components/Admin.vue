@@ -122,7 +122,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
             EtelID: Number(food.EtelID),
             Nev: food.Nev,
             Leiras: food.Leiras,
-            Kep: food.Kep,
+            KepPath: food.KepPath,
             Ar: food.Ar,
         })
     })
