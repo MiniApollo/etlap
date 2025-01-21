@@ -13,7 +13,7 @@ const newFood = ref({
     EtelID: "",
     Nev: "",
     Leiras: "",
-    Kep: "",
+    KepPath: "",
     Ar: "",
 });
 function setFormToUpdate(food: any) {
@@ -23,7 +23,7 @@ function setFormToUpdate(food: any) {
     newFood.value.EtelID = food.EtelID;
     newFood.value.Nev = food.Nev;
     newFood.value.Leiras = food.Leiras;
-    newFood.value.Kep = food.Kep;
+    newFood.value.KepPath = food.KepPath;
     newFood.value.Ar = food.Ar;
 }
 
@@ -31,7 +31,7 @@ function resetNewFood() {
     newFood.value.EtelID = "";
     newFood.value.Nev = "";
     newFood.value.Leiras = "";
-    newFood.value.Kep = "";
+    newFood.value.KepPath = "";
     newFood.value.Ar = "";
 
     requestType = "POST";
@@ -56,7 +56,7 @@ function resetNewFood() {
                 <li v-for="food in foods" class="m-2 p-4 h-96 rounded-md border-black border-2">
                     <h3 class="text-2xl">{{ food.Nev }}</h3>
                     <p>{{ food.Leiras }}</p>
-                    <img :src="food.Kep" :alt="food.Nev + ' image'">
+                    <img :src="food.KepPath" :alt="food.Nev + ' image'">
                     <p>{{ food.Ar }} Ft</p>
                     <button @click="setFormToUpdate(food)" class="border-2 border-black">Módosítás</button>
                     <button @click="$emit('deleteFood', food.EtelID)" class="border-2 border-black">Törlés</button>
@@ -71,8 +71,8 @@ function resetNewFood() {
             <label for="Leiras">Leírás: </label>
             <input type="text" id="Leiras" v-model="newFood.Leiras" autocomplete="off" maxlength="1024">
 
-            <label for="Kep">Kép útvonal: </label>
-            <input type="text" id="Kep" v-model="newFood.Kep" autocomplete="off" maxlength="128">
+            <label for="KepPath">Kép útvonal: </label>
+            <input type="text" id="KepPath" v-model="newFood.KepPath" autocomplete="off" maxlength="128">
 
             <label for="Ar">Ár: </label>
             <input type="number" id="Ar" v-model="newFood.Ar" required autocomplete="off" min="1" step="any">
