@@ -57,7 +57,7 @@ function sendOrder() {
             <li class="my-2" v-for="(food, index) in basketContent">
                 <h3 class="text-2xl">{{ food.Nev }}</h3>
                 <p>{{ food.Leiras }}</p>
-                {{ food.Kep }}
+                {{ food.KepPath }}
                 <p>{{ food.Ar }} Ft</p>
                 <button @click="$emit('torol', index)">Töröl</button>
             </li>
