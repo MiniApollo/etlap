@@ -11,7 +11,7 @@
                 nostrum, velit fugit atque sapiente consectetur similique fugiat enim quo dolorem sit? Id quidem tempora
                 asperiores dolore?</p>
             <RouterLink
-                class="p-2 bg-slate-200 border-2 rounded-3xl border-black text-black hover:text-xl transition-all duration-500"
+                class="p-2 bg-slate-300 border-2 rounded-3xl border-black text-black hover:text-xl transition-all duration-500"
                 to="/etelek">Étlap megtekíntése</RouterLink>
         </div>
         <div class="mx-2 my-2 lg:mx-6">
