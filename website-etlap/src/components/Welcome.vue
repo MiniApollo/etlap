@@ -15,7 +15,7 @@
                 to="/etelek">Étlap megtekíntése</RouterLink>
         </div>
         <div class="mx-2 my-2 lg:mx-6">
-            <img class="border-4 rounded-md" src="../assets/foods/restaurant-3955372_1920.jpg" alt="Rustic food">
+            <img class="border-4 rounded-md" src="http://localhost:8080/assets/foods/restaurant-3955372_1920.jpg" alt="Rustic food">
         </div>
         <div class="mx-1 lg:mx-16 text-center">
             <h1 class="text-6xl lg:text-7xl mb-8">Megnyitottunk</h1>
@@ -25,7 +25,7 @@
                 asperiores dolore?</p>
         </div>
         <div class="mx-2 my-2 lg:mx-6">
-            <img class="border-4 rounded-md" src="../assets/foods/platter-2009590_1920.jpg" alt="Rustic plate">
+            <img class="border-4 rounded-md" src="http://localhost:8080/assets/foods/platter-2009590_1920.jpg" alt="Rustic plate">
         </div>
     </div>
 
