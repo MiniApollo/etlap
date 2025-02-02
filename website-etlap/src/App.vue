@@ -14,12 +14,13 @@ function deleteFromBasket(index: Number) {
   saveBasket();
 }
 
-function saveBasket() {
-  localStorage.setItem("basketContent", JSON.stringify(basketContent.value));
-}
-
 function emptyBasket() {
   basketContent.value = [];
+  saveBasket();
+}
+
+function saveBasket() {
+  localStorage.setItem("basketContent", JSON.stringify(basketContent.value));
 }
 
 onMounted(() => {
