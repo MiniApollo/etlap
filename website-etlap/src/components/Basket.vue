@@ -7,7 +7,6 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(["torol", "emptyBasket"]);
 
-const isSubmiting = ref(false);
 // Important to use the restapi json names
 const newCustomer = ref({
     Nev : "",
@@ -32,7 +31,6 @@ function sendOrder() {
     })
 
     emit("emptyBasket");
-    isSubmiting.value = false;
     newCustomer.value = {
         Nev: "",
         Email: "",
@@ -47,34 +45,44 @@ function sendOrder() {
     <!-- Fix warnings:
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
     <div>
-        <h1 class="text-3xl">Rendelés</h1>
+        <h1 class="px-5 text-3xl">Rendelés</h1>
         <h2 v-if="basketContent === undefined || basketContent.length == 0">
             A Kosarad Üres
         </h2>
-        <ul v-else-if="!isSubmiting">
-            <button @click="isSubmiting = true">Tovább a leadáshoz</button>
-            <button @click="$emit('emptyBasket')">Kosár kiürítése</button>
-            <li class="my-2" v-for="(food, index) in basketContent">
-                <h3 class="text-2xl">{{ food.Nev }}</h3>
-                <p>{{ food.Leiras }}</p>
-                {{ food.KepPath }}
-                <p>{{ food.Ar }} Ft</p>
-                <button @click="$emit('torol', index)">Töröl</button>
-            </li>
-        </ul>
-        <form v-else-if="isSubmiting" @submit.prevent="sendOrder">
-            <button @click="isSubmiting = false">Vissza</button>
+        <div v-else class="flex">
+            <ul class="flex flex-col basis-3/5">
+                <li class="m-3 rounded-md border-black border-2 flex max-sm:flex-col" v-for="(food, index) in basketContent">
+                    <img class="w-full basis-1/2 rounded-md"
+                        :src="'http://localhost:8080/assets/foods/' + food.KepPath" :alt="food.Nev + ' kép'">
+                    <div class="m-3 basis-1/2">
+                        <h3 class="text-4xl font-semibold my-2">{{ food.Nev }}</h3>
+                        <p class="lg:min-h-10">{{ food.Leiras }}</p>
+                        <p class="my-4 text-2xl font-semibold">{{ food.Ar }} Ft</p>
+                        <button
+                            class="p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
+                            @click="$emit('torol', index)">Törlés</button>
+                    </div>
+                </li>
+            </ul>
+            <form class="flex flex-col p-3" @submit.prevent="sendOrder">
+                <button
+                    class="p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
+                    @click="$emit('emptyBasket')">Kosár kiürítése</button>
 
-            <label for="Name">Név: </label>
-            <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off" maxlength="128">
+                <label for="Name">Név: </label>
+                <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off" maxlength="128">
 
-            <label for="Email">Email Cím: </label>
-            <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off" maxlength="128">
+                <label for="Email">Email Cím: </label>
+                <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off" maxlength="128">
 
-            <label for="PhoneNumber">Telefonszám: </label>
-            <input type="text" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off" maxlength="32">
+                <label for="PhoneNumber">Telefonszám: </label>
+                <input type="text" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off"
+                    maxlength="32">
 
-            <input type="submit" value="Rendelés Küldése">
-        </form>
+                <input
+                    class="p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
+                    type="submit" value="Rendelés Küldése">
+            </form>
+        </div>
     </div>
 </template>
