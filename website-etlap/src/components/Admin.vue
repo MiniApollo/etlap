@@ -134,7 +134,7 @@ async function deleteFood(EtelID: string) {
     // TODO: Megerősítő ablak
 
     // Food can't be deleted if someone ordered it
-    // becuase of foreign key in connection table
+    // because of foreign key in connection table
     await fetch("http://localhost:8080/food/" + EtelID, {
         method: "DELETE",
         headers: {
