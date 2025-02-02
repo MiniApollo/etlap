@@ -103,7 +103,7 @@ A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni �
 
 -   MiniApollo, SmarkPogany: Surmann Márk
 -   BudaLevente: Buda Levente István
--   ocsaimark: Ócsai Márk
+-   GyalogKakukk: Ócsai Márk
 
 ![etlapProjektGoVue](https://github.com/user-attachments/assets/7b4b702b-75de-49f6-824d-d1b6d5348dfc)
 
