@@ -60,9 +60,10 @@ func main() {
 	router.Use(cors.New(config))
 
 	// User API
+	router.Static("/assets", "./assets/")
+
 	router.GET("/food", restapi.GetAllFood)
 	router.GET("/food/:id", restapi.GetFood)
-	router.Static("/assets", "./assets/foods/")
 	router.POST("/order", restapi.PostOrder)
 
 	// Admin API
