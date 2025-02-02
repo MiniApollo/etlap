@@ -35,7 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray-200">
+  <div>
     <!-- Need text-base to have smooth font changing if not navbar changes instantly -->
     <nav class="bg-brown fixed top-0 w-full p-3 hover:py-4 transition-all duration-500 text-base">
       <ul>
