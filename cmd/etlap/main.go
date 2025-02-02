@@ -60,6 +60,8 @@ func main() {
 	router.Use(cors.New(config))
 
 	// User API
+	router.StaticFile("/", "./assets/index.html")
+	router.StaticFile("/favicon.ico", "./assets/favicon.ico")
 	router.Static("/assets", "./assets/")
 
 	router.GET("/food", restapi.GetAllFood)
