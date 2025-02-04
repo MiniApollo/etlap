@@ -41,7 +41,7 @@ onMounted(() => {
       <ul>
         <RouterLink
           class="mx-2 my-3 px-1 py-2 text-black hover:text-black hover:text-xl transition-all duration-300 rounded-md"
-          to="/" activeClass="bg-amber-500">Home</RouterLink>
+          to="/" activeClass="bg-amber-500">Főoldal</RouterLink>
         <RouterLink
           class="mx-2 my-3 px-1 py-2 text-black hover:text-black hover:text-xl transition-all duration-300 rounded-md"
           to="/etelek" activeClass="bg-amber-500">Ételek</RouterLink>
