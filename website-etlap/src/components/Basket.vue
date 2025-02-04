@@ -49,7 +49,7 @@ function sendOrder() {
         <h2 v-if="basketContent === undefined || basketContent.length == 0">
             A Kosarad Üres
         </h2>
-        <div v-else class="flex">
+        <div v-else class="flex max-sm:flex-col-reverse">
             <ul class="flex flex-col basis-3/5">
                 <li class="m-3 rounded-md border-black border-2 flex max-sm:flex-col" v-for="(food, index) in basketContent">
                     <img class="w-full basis-1/2 rounded-md"
@@ -64,23 +64,25 @@ function sendOrder() {
                     </div>
                 </li>
             </ul>
-            <form class="flex flex-col p-3" @submit.prevent="sendOrder">
+            <form class="flex flex-col p-16 bg-slate-300 rounded-3xl basis-2/5 md:self-start" @submit.prevent="sendOrder">
                 <button
-                    class="p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
+                    class="p-2 bg-red-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500 self-center"
                     @click="$emit('emptyBasket')">Kosár kiürítése</button>
 
-                <label for="Name">Név: </label>
-                <input type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off" maxlength="128">
+                <h1 class="font-semibold text-xl mb-4">Rendelési adatok</h1>
+                
+                <label for="Name">Név:</label>
+                <input class="" type="text" id="Name" v-model="newCustomer.Nev" required autocomplete="off" maxlength="128">
 
-                <label for="Email">Email Cím: </label>
+                <label for="Email">Email Cím:</label>
                 <input type="email" id="Email" v-model="newCustomer.Email" required autocomplete="off" maxlength="128">
 
-                <label for="PhoneNumber">Telefonszám: </label>
+                <label for="PhoneNumber">Telefonszám:</label>
                 <input type="text" id="PhoneNumber" v-model="newCustomer.Telefonszam" required autocomplete="off"
                     maxlength="32">
 
                 <input
-                    class="p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
+                    class="p-2 bg-green-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500 self-center"
                     type="submit" value="Rendelés Küldése">
             </form>
         </div>
