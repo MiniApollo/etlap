@@ -28,7 +28,7 @@ onMounted(() => {
     <!-- Fix warnings:
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
     <div class="m-auto">
-        <h1 class="px-5 text-3xl">Kinálatunk</h1>
+        <h1 class="px-5 text-5xl font-semibold">Kinálatunk</h1>
         <h2 v-if="foods === undefined || foods.length == 0">
             Hiba történt: <br>
             {{ error }}
