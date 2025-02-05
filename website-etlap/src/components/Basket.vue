@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 // https://vuejs.org/guide/components/props
 const props = defineProps<{
@@ -50,6 +51,14 @@ function sendOrder() {
             A Kosarad Üres
         </h2>
         <div v-else class="flex max-sm:flex-col-reverse">
+        <h1 class="px-5 text-5xl text-center font-semibold">Rendelés</h1>
+        <div class="bg-gray-300 rounded-3xl text-center mx-auto my-9 p-16 w-1/2"
+            v-if="basketContent === undefined || basketContent.length == 0">
+            <h1 class="m-10 text-2xl font-semibold">A Kosarad Üres</h1>
+            <RouterLink
+                class="m-2 p-4 font-semibold bg-slate-300 border-2 rounded-3xl border-black text-black hover:text-xl transition-all duration-500"
+                to="/etelek">Rendelj valamit</RouterLink>
+        </div>
             <ul class="flex flex-col basis-3/5">
                 <li class="m-3 rounded-md border-black border-2 flex max-sm:flex-col" v-for="(food, index) in basketContent">
                     <img class="w-full basis-1/2 rounded-md"
