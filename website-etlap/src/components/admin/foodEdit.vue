@@ -41,25 +41,32 @@ function resetNewFood() {
 </script>
 <template>
     <div>
-        <button @click="isAddNewFood = !isAddNewFood">
-            <p v-if="!isAddNewFood">Új Étel hozzáadása</p>
-            <p v-else-if="isAddNewFood">Vissza</p>
-        </button>
+        <h1 class="my-4 px-5 text-5xl font-semibold">Ételek Listája</h1>
+        <button
+            class="mx-4 p-3 bg-green-300 hover:bg-green-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
+            @click="isAddNewFood = true"
+            v-if="!isAddNewFood">Új Étel hozzáadása</button>
+        <button class="mx-4" @click="resetNewFood();" v-else-if="isAddNewFood">Vissza</button>
 
         <div v-if="!isAddNewFood">
-            <h1 class="text-3xl">Ételek Listája</h1>
             <h2 v-if="foods === undefined || foods.length == 0">
                 Hiba történt: <br>
                 {{ statusMessage }}
             </h2>
-            <ul v-else>
-                <li v-for="food in foods" class="m-2 p-4 h-96 rounded-md border-black border-2">
-                    <h3 class="text-2xl">{{ food.Nev }}</h3>
-                    <p>{{ food.Leiras }}</p>
-                    <img :src="food.KepPath" :alt="food.Nev + ' image'">
-                    <p>{{ food.Ar }} Ft</p>
-                    <button @click="setFormToUpdate(food)" class="border-2 border-black">Módosítás</button>
-                    <button @click="$emit('deleteFood', food.EtelID)" class="border-2 border-black">Törlés</button>
+            <ul class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3" v-else>
+                <li v-for="food in foods" class="m-3 rounded-md border-black border-2 flex flex-col">
+                    <img class="object-cover w-full flex-grow basis-2/3 rounded-md"
+                        :src="'http://localhost:8080/assets/foods/' + food.KepPath" :alt="food.Nev + ' kép'">
+                    <div class="m-3">
+                        <h3 class="text-4xl font-semibold my-2">{{ food.Nev }}</h3>
+                        <p class="lg:min-h-10">{{ food.Leiras }}</p>
+                        <p class="my-4 text-2xl font-semibold">{{ food.Ar }} Ft</p>
+
+                        <button @click="setFormToUpdate(food)"
+                            class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500">Módosítás</button>
+                        <button @click="$emit('deleteFood', food.EtelID)"
+                            class="mx-4 p-2 bg-red-300 hover:bg-red-400 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500">Törlés</button>
+                    </div>
                 </li>
             </ul>
         </div>
