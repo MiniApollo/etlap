@@ -112,7 +112,11 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
     if (etelID) {
         etelID = "/" + etelID;
     }
-    await fetch("http://localhost:8080/food" + etelID, {
+    let choice: boolean = confirm("Biztosan módosítod?")
+    if (!choice) {
+        return;
+    }
+    const response = await fetch("http://localhost:8080/food" + etelID, {
         method: requestType,
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
@@ -126,27 +130,39 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
             Ar: food.Ar,
         })
     })
+    if (!response.ok) {
+        alert("Sikertelen módosítás");
+        return;
+    }
     getData();
 }
 
 async function deleteFood(EtelID: string) {
-
-    // TODO: Megerősítő ablak
-
-    // Food can't be deleted if someone ordered it
-    // because of foreign key in connection table
-    await fetch("http://localhost:8080/food/" + EtelID, {
+    let choice: boolean = confirm("Biztosan törlöd?")
+    if (!choice) {
+        return;
+    }
+    const response = await fetch("http://localhost:8080/food/" + EtelID, {
         method: "DELETE",
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
             "Content-type": "application/json; charset=UTF-8"
         }
     })
+    if (!response.ok) {
+        alert("Sikertelen törlés");
+        return;
+    }
     getData();
 }
 
 function signOut() {
+    let choice: boolean = confirm("Biztosan kijelenkezel?")
+    if (!choice) {
+        return;
+    }
     isLoggedIn.value = false;
+    responseMessage.value = ""
     // Remove all saved data from sessionStorage
     sessionStorage.clear();
 }
@@ -161,28 +177,41 @@ onMounted(() => {
 </script>
 <template>
     <div>
-        <h3>Admin</h3>
-        <form v-if="!isLoggedIn" @submit.prevent="sendPassword">
-            <label for="adminPassword">Jelszó:</label>
-            <input type="password" id="adminPassword" v-model="password" required>
-            <input type="submit" value="Bejelentkezés">
-            <h3>{{ responseMessage }}</h3>
-        </form>
+        <div class="flex flex-col justify-center" v-if="!isLoggedIn" @submit.prevent="sendPassword">
+            <h1 class="px-5 text-5xl font-semibold text-center">Admin</h1>
+            <form class="bg-gray-300 rounded-3xl mx-3 my-8 p-16 self-center flex flex-col gap-2">
+                <h2 class="font-semibold text-3xl mb-4">Bejelentkezés</h2>
+                <label class="text-lg" for="adminPassword">Jelszó:</label>
+                <input class="p-2 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                    type="password" id="adminPassword" v-model="password" required>
+                <input
+                    class="my-3 p-2 bg-blue-300 hover:bg-blue-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-center"
+                    type="submit" value="Bejelentkezés">
+                <p class="text-lg text-center font-semibold">{{ responseMessage }}</p>
+            </form>
+        </div>
 
         <div v-else-if="isLoggedIn">
-            <button @click="signOut">Kijelentkezés</button>
-            <br>
-            <button @click="isShowOrder = !isShowOrder; getData()">
-                <p v-if="!isShowOrder">Rendelések megjelenítése</p>
-                <p v-else-if="isShowOrder">Ételek szerkesztésének megjelenítése</p>
-            </button>
+            <h1 class="px-5 text-5xl font-semibold">Admin</h1>
+            <nav class="flex max-sm:flex-col">
+                <button
+                    class="my-3 p-2 bg-red-300 hover:bg-red-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-center"
+                    @click="signOut">Kijelentkezés</button>
+                <button @click="isShowOrder = !isShowOrder; getData()">
+                    <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
+                        v-if="!isShowOrder">Rendelések megjelenítése</p>
+                    <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
+                        v-else-if="isShowOrder">Ételek szerkesztésének megjelenítése</p>
+                </button>
+            </nav>
 
             <div v-if="isShowOrder">
                 <button @click="showCurrentOrders = !showCurrentOrders; getData()">
-                    <p v-if="showCurrentOrders">Korábbi rendelések megjelenítése</p>
-                    <p v-else-if="!showCurrentOrders">Jelenlegi rendelések megjelenítése</p>
+                    <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
+                        v-if="showCurrentOrders">Korábbi rendelések megjelenítése</p>
+                    <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
+                        v-else-if="!showCurrentOrders">Jelenlegi rendelések megjelenítése</p>
                 </button>
-
                 <h3 v-if="showCurrentOrders">Jelenlegi Rendelések:</h3>
                 <h3 v-else-if="!showCurrentOrders">Korrábbi Rendelések:</h3>
                 <ul>
@@ -190,13 +219,15 @@ onMounted(() => {
                     <li v-if="Array.isArray(customers)" v-for="(customer, index) in customers"
                         class="m-1 p-1 border border-black">
                         <CustomerData @orderComplete="orderDone" :customer="customer"
-                            :foods-by-customer="foodsByCustomer" :show-current-orders="showCurrentOrders" :index="index" />
+                            :foods-by-customer="foodsByCustomer" :show-current-orders="showCurrentOrders"
+                            :index="index" />
                     </li>
                 </ul>
             </div>
 
             <div v-else-if="!isShowOrder">
-                <FoodEdit @delete-food="deleteFood" @newFoodSubmit="postNewFood" :foods="foods" :status-message="statusMessage" />
+                <FoodEdit @delete-food="deleteFood" @newFoodSubmit="postNewFood" :foods="foods"
+                    :status-message="statusMessage" />
             </div>
 
         </div>
