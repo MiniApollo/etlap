@@ -48,9 +48,6 @@ onMounted(() => {
         <RouterLink
           class="mx-2 my-3 px-1 py-2  text-black hover:text-black hover:text-xl transition-all duration-300 rounded-md"
           to="/kosar" activeClass="bg-amber-500">Kosár</RouterLink>
-        <RouterLink
-          class="mx-2 my-3 px-1 py-2 text-black hover:text-black hover:text-xl transition-all duration-300 rounded-md"
-          to="/admin" activeClass="bg-amber-500">Admin</RouterLink>
       </ul>
     </nav>
     <main class="pt-16">
