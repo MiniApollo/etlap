@@ -29,7 +29,7 @@ async function getData() {
     }
 
     if (!Array.isArray(customers.value)) {
-        statusMessage.value = "Nincs új rendelés";
+        statusMessage.value = "Nincs rendelés";
         statusError.value = true;
         return
     }
@@ -112,7 +112,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
     if (etelID) {
         etelID = "/" + etelID;
     }
-    let choice: boolean = confirm("Biztosan módosítod?")
+    let choice: boolean = confirm("Biztosan feltöltöd?")
     if (!choice) {
         return;
     }
@@ -192,12 +192,12 @@ onMounted(() => {
         </div>
 
         <div v-else-if="isLoggedIn">
-            <h1 class="px-5 text-5xl font-semibold">Admin</h1>
-            <nav class="flex max-sm:flex-col">
+            <h1 class="px-5 text-6xl font-semibold">Admin</h1>
+            <nav class="flex max-sm:flex-col mx-4 gap-4">
                 <button
-                    class="my-3 p-2 bg-red-300 hover:bg-red-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-center"
+                    class="my-3 py-2 px-5 max-md:px-10 bg-red-300 hover:bg-red-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-center max-md:self-start"
                     @click="signOut">Kijelentkezés</button>
-                <button @click="isShowOrder = !isShowOrder; getData()">
+                <button class="max-sm:self-start" @click="isShowOrder = !isShowOrder; getData()">
                     <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
                         v-if="!isShowOrder">Rendelések megjelenítése</p>
                     <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
@@ -206,18 +206,21 @@ onMounted(() => {
             </nav>
 
             <div v-if="isShowOrder">
-                <button @click="showCurrentOrders = !showCurrentOrders; getData()">
+                <button class="m-4" @click="showCurrentOrders = !showCurrentOrders; getData()">
                     <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
                         v-if="showCurrentOrders">Korábbi rendelések megjelenítése</p>
                     <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
                         v-else-if="!showCurrentOrders">Jelenlegi rendelések megjelenítése</p>
                 </button>
-                <h3 v-if="showCurrentOrders">Jelenlegi Rendelések:</h3>
-                <h3 v-else-if="!showCurrentOrders">Korrábbi Rendelések:</h3>
-                <ul>
-                    <h3 v-if="statusError && showCurrentOrders">{{ statusMessage }}</h3>
+                <h1 class="my-4 px-5 text-5xl font-semibold" v-if="showCurrentOrders">Jelenlegi Rendelések: {{
+                    customers.length }}</h1>
+                <h1 class="my-4 px-5 text-5xl font-semibold" v-else-if="!showCurrentOrders">Korrábbi Rendelések: {{
+                    customers.length }}</h1>
+                <ul class="m-4">
+                    <h3 class="text-4xl font-semibold bg-gray-300 rounded-3xl p-8" v-if="statusError">{{ statusMessage
+                        }}</h3>
                     <li v-if="Array.isArray(customers)" v-for="(customer, index) in customers"
-                        class="m-1 p-1 border border-black">
+                        class="m-1 p-1 border border-black bg-slate-300 rounded-xl">
                         <CustomerData @orderComplete="orderDone" :customer="customer"
                             :foods-by-customer="foodsByCustomer" :show-current-orders="showCurrentOrders"
                             :index="index" />
