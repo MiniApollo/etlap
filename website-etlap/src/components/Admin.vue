@@ -112,8 +112,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
     if (etelID) {
         etelID = "/" + etelID;
     }
-    let choice: boolean = confirm("Biztosan feltöltöd?")
-    if (!choice) {
+    if (!confirm("Biztosan feltöltöd?")) {
         return;
     }
     const response = await fetch("http://localhost:8080/food" + etelID, {
@@ -138,8 +137,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
 }
 
 async function deleteFood(EtelID: string) {
-    let choice: boolean = confirm("Biztosan törlöd?")
-    if (!choice) {
+    if (!confirm("Biztosan törlöd?")) {
         return;
     }
     const response = await fetch("http://localhost:8080/food/" + EtelID, {
@@ -157,8 +155,7 @@ async function deleteFood(EtelID: string) {
 }
 
 function signOut() {
-    let choice: boolean = confirm("Biztosan kijelenkezel?")
-    if (!choice) {
+    if (!confirm("Biztosan kijelenkezel?")) {
         return;
     }
     isLoggedIn.value = false;
