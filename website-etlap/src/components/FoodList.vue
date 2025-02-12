@@ -2,9 +2,13 @@
 import { onMounted, ref } from 'vue';
 
 const foods: any = ref([]);
-const error: any = ref();
+const statusHeader = ref();
+const status = ref();
 
 async function getAllFood() {
+    statusHeader.value = "";
+    status.value = "";
+
     fetch("http://localhost:8080/food")
         .then(res => res.json())
         .then(data => {
@@ -15,7 +19,8 @@ async function getAllFood() {
         })
         .catch(err => {
             console.log(err);
-            error.value = err
+            statusHeader.value = "Hiba történt:";
+            status.value = err;
         });
 }
 
@@ -29,9 +34,10 @@ onMounted(() => {
      https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
     <div class="m-auto">
         <h1 class="px-5 text-5xl font-semibold">Kinálatunk</h1>
-        <div class="bg-gray-300 rounded-3xl text-center mx-3 my-9 p-16 md:w-3/4 lg:w-1/2 md:mx-auto" v-if="foods === undefined || foods.length == 0">
-            <h2 class="m-10 text-4xl font-semibold">Hiba történt:</h2>
-            <h2 class="text-2xl">{{ error }}</h2>
+        <div class="bg-gray-300 rounded-3xl text-center mx-3 my-9 p-16 md:w-3/4 lg:w-1/2 md:mx-auto"
+            v-if="foods === undefined || foods.length == 0">
+            <h2 class="m-10 text-4xl font-semibold">{{ statusHeader }}</h2>
+            <h2 class="text-2xl">{{ status }}</h2>
         </div>
         <ul v-else class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <li v-for="food in foods" class="m-3 rounded-md border-black border-2 flex flex-col">
