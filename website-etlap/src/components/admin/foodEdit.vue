@@ -41,12 +41,13 @@ function resetNewFood() {
 </script>
 <template>
     <div>
-        <h1 class="my-4 px-5 text-5xl font-semibold">Ételek Listája</h1>
+        <h1 v-if="!isAddNewFood" class="my-4 px-5 text-5xl font-semibold">Ételek Listája</h1>
         <button
             class="mx-4 p-3 bg-green-300 hover:bg-green-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
-            @click="isAddNewFood = true"
-            v-if="!isAddNewFood">Új Étel hozzáadása</button>
-        <button class="mx-4" @click="resetNewFood();" v-else-if="isAddNewFood">Vissza</button>
+            @click="isAddNewFood = true" v-if="!isAddNewFood">Új Étel hozzáadása</button>
+        <button
+            class="mx-4 py-3 px-12 max-md:px-16 max-md:w-1/2 my-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
+            @click="resetNewFood();" v-else-if="isAddNewFood">Vissza</button>
 
         <div v-if="!isAddNewFood">
             <h2 v-if="foods === undefined || foods.length == 0">
@@ -70,21 +71,30 @@ function resetNewFood() {
                 </li>
             </ul>
         </div>
-        <form @submit.prevent="$emit('newFoodSubmit', newFood, requestType, newFood.EtelID); resetNewFood()"
+        <form class="flex flex-col gap-2 p-16 bg-slate-300 rounded-3xl lg:w-1/2 mx-auto"
+            @submit.prevent="$emit('newFoodSubmit', newFood, requestType, newFood.EtelID); resetNewFood()"
             v-else-if="isAddNewFood">
+
+            <h1 class="font-semibold text-4xl mb-4">Étel Szerkesztése</h1>
             <label for="Name">Név: </label>
-            <input type="text" id="Name" v-model="newFood.Nev" required autocomplete="off" maxlength="128">
+            <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                type="text" id="Name" v-model="newFood.Nev" required autocomplete="off" maxlength="128">
 
             <label for="Leiras">Leírás: </label>
-            <input type="text" id="Leiras" v-model="newFood.Leiras" autocomplete="off" maxlength="1024">
+            <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                type="text" id="Leiras" v-model="newFood.Leiras" autocomplete="off" maxlength="1024">
 
             <label for="KepPath">Kép útvonal: </label>
-            <input type="text" id="KepPath" v-model="newFood.KepPath" autocomplete="off" maxlength="128">
+            <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                type="text" id="KepPath" v-model="newFood.KepPath" autocomplete="off" maxlength="128">
 
             <label for="Ar">Ár: </label>
-            <input type="number" id="Ar" v-model="newFood.Ar" required autocomplete="off" min="1" step="any">
+            <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                type="number" id="Ar" v-model="newFood.Ar" required autocomplete="off" min="1" step="any">
 
-            <input type="submit" value="Rendelés Küldése">
+            <input
+                class="p-2 bg-green-300 hover:bg-green-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-start"
+                type="submit" value="Étel feltöltése">
         </form>
     </div>
 </template>
