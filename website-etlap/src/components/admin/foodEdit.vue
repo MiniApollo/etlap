@@ -78,19 +78,19 @@ function resetNewFood() {
             <h1 class="font-semibold text-4xl mb-4">Étel Szerkesztése</h1>
             <label for="Name">Név: </label>
             <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
-                type="text" id="Name" v-model="newFood.Nev" required autocomplete="off" maxlength="128">
+                type="text" id="Name" v-model.trim="newFood.Nev" required autocomplete="off" maxlength="128">
 
             <label for="Leiras">Leírás: </label>
             <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
-                type="text" id="Leiras" v-model="newFood.Leiras" autocomplete="off" maxlength="1024">
+                type="text" id="Leiras" v-model.trim="newFood.Leiras" autocomplete="off" maxlength="1024">
 
             <label for="KepPath">Kép útvonal: </label>
             <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
-                type="text" id="KepPath" v-model="newFood.KepPath" autocomplete="off" maxlength="128">
+                type="text" id="KepPath" v-model.trim="newFood.KepPath" autocomplete="off" maxlength="128">
 
             <label for="Ar">Ár: </label>
             <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
-                type="number" id="Ar" v-model="newFood.Ar" required autocomplete="off" min="1" step="any">
+                type="number" id="Ar" v-model.trim="newFood.Ar" required autocomplete="off" min="1" step="any">
 
             <input
                 class="p-2 bg-green-300 hover:bg-green-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-start"

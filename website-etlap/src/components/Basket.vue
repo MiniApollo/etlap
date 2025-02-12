@@ -93,16 +93,16 @@ function sendOrder() {
                     <h1 class="font-semibold text-4xl mb-4">Rendelési adatok</h1>
 
                     <label for="Name">Név:</label>
-                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="text" id="Name" v-model="newCustomer.Nev" required
+                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="text" id="Name" v-model.trim="newCustomer.Nev" required
                         autocomplete="off" maxlength="128">
 
                     <label for="Email">Email Cím:</label>
                     <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="email" id="Email" placeholder="name@example.com"
-                        v-model="newCustomer.Email" required autocomplete="off" maxlength="128">
+                        v-model.trim="newCustomer.Email" required autocomplete="off" maxlength="128">
 
                     <label for="PhoneNumber">Telefonszám:</label>
                     <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="text" id="PhoneNumber"
-                        v-model="newCustomer.Telefonszam" required autocomplete="off" maxlength="32">
+                        v-model.trim="newCustomer.Telefonszam" required autocomplete="off" maxlength="32">
 
                     <h1 class="font-semibold text-lg mb-4">Összesen: {{ sumPrice }} Ft</h1>
 
