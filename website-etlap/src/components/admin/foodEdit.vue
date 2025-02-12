@@ -3,11 +3,11 @@ import { ref } from 'vue';
 
 const props = defineProps<{
     foods?: any[],
-    statusMessage?: String
+    statusMessage?: string
 }>()
 
 const isAddNewFood = ref(false);
-let requestType: String = "POST";
+let requestType: string = "POST";
 
 const newFood = ref({
     EtelID: "",
