@@ -14,7 +14,7 @@
                 to="/etelek">Étlap megtekíntése</RouterLink>
         </div>
         <div class="mx-2 my-4 lg:mx-6">
-            <img class="border-4 rounded-md" src="http://localhost:8080/assets/foods/singapore.jpg" alt="Rustic food">
+            <img class="border-4 rounded-md" src="http://localhost:8080/assets/foods/singaporeScaled.jpg" alt="Rustic food">
         </div>
         <div class="mx-1 lg:mx-16 text-center md:my-6">
             <h1 class="text-5xl lg:text-7xl mb-8">Megnyitottunk</h1>
