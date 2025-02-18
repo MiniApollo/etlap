@@ -49,7 +49,7 @@ onMounted(() => {
                     <p class="my-4 text-2xl font-semibold">{{ food.Ar }} Ft</p>
                     <button
                         class="p-2 bg-slate-300 active:bg-slate-400 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
-                        @click="$emit('kosarhoz', food)"> Kosárhoz</button>
+                        @click="$emit('kosarhoz', food)"> Kosárba</button>
                 </div>
             </li>
         </ul>
