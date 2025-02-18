@@ -19,12 +19,13 @@ var AdminPassword string
 var JwtSecret []byte
 
 type customer struct {
-	VasarloID   int64  `json:"VasarloID"` // Not needed, because of auto increment
-	Nev         string `json:"Nev" binding:"required"`
-	Email       string `json:"Email" binding:"required"`
-	Telefonszam string `json:"Telefonszam" binding:"required"`
-	LeadasiIdo  string `json:"LeadasiIdo"`
-	Elkeszult   bool   `json:"Elkeszult"`
+	VasarloID    int64           `json:"VasarloID"` // Not needed, because of auto increment
+	Nev          string          `json:"Nev" binding:"required"`
+	Email        string          `json:"Email" binding:"required"`
+	Telefonszam  string          `json:"Telefonszam" binding:"required"`
+	LeadasiIdo   string          `json:"LeadasiIdo"`
+	ElkeszultIdo sql.NullString  `json:"ElkeszultIdo"`
+	Osszeg       sql.NullFloat64 `json:"Osszeg"`
 }
 
 type orderRow struct {
@@ -238,7 +239,6 @@ func PostOrder(c *gin.Context) {
 
 	newCustomer, err := Db.Exec("INSERT INTO Vasarlok (Nev, Email, Telefonszam) VALUES (?, ?, ?)", newOrder.Customer.Nev, newOrder.Customer.Email, newOrder.Customer.Telefonszam)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
@@ -256,6 +256,20 @@ func PostOrder(c *gin.Context) {
 		}
 	}
 
+	var sumPrice float64
+	err = Db.QueryRow("SELECT SUM(Etelek.Ar) FROM Rendelesek INNER JOIN Etelek ON Rendelesek.EtelID = Etelek.EtelID WHERE Rendelesek.VasarloID = ?", newOrder.Customer.VasarloID).Scan(&sumPrice)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+
+	_, err = Db.Exec("UPDATE Vasarlok SET Osszeg = ? WHERE VasarloID = ?", sumPrice, newOrder.Customer.VasarloID)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	newOrder.Customer.Osszeg = sql.NullFloat64{Float64: sumPrice, Valid: true}
+
 	c.IndentedJSON(http.StatusCreated, newOrder)
 }
 
@@ -265,8 +279,14 @@ func CompleteOrder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	var isDoneDateTime sql.NullString
+	if isDone["Elkeszult"] {
+		// About why this date
+		// https://pkg.go.dev/time#Time.Format
+		isDoneDateTime = sql.NullString{String: time.Now().Format("2006-01-02 15:04:05"), Valid: true}
+	}
 
-	_, err := Db.Exec("UPDATE Vasarlok SET Elkeszult=? WHERE VasarloID=?", isDone["Elkeszult"], c.Param("id"))
+	_, err := Db.Exec("UPDATE Vasarlok SET ElkeszultIdo=? WHERE VasarloID=?", isDoneDateTime, c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
@@ -285,7 +305,7 @@ func GetAllCustomer(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var customer customer
-		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam, &customer.LeadasiIdo, &customer.Elkeszult); err != nil {
+		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam, &customer.LeadasiIdo, &customer.ElkeszultIdo, &customer.Osszeg); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -311,7 +331,13 @@ func GetAllCustomerByOrder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	rows, err := Db.Query("SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID WHERE Vasarlok.Elkeszult=? GROUP BY VasarloID", isDone)
+
+	checkNullQuery := "SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID WHERE Vasarlok.ElkeszultIdo is null GROUP BY VasarloID"
+	if isDone {
+		checkNullQuery = "SELECT Vasarlok.* FROM Rendelesek INNER JOIN Vasarlok ON Rendelesek.VasarloID=Vasarlok.VasarloID WHERE Vasarlok.ElkeszultIdo is not null GROUP BY VasarloID"
+	}
+
+	rows, err := Db.Query(checkNullQuery)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
@@ -321,7 +347,7 @@ func GetAllCustomerByOrder(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var customer customer
-		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam, &customer.LeadasiIdo, &customer.Elkeszult); err != nil {
+		if err := rows.Scan(&customer.VasarloID, &customer.Nev, &customer.Email, &customer.Telefonszam, &customer.LeadasiIdo, &customer.ElkeszultIdo, &customer.Osszeg); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -342,7 +368,7 @@ func GetAllCustomerByOrder(c *gin.Context) {
 // There are some example users, skip some IDs when using the API
 func GetCustomer(c *gin.Context) {
 	var Customer customer
-	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam, &Customer.LeadasiIdo, &Customer.Elkeszult)
+	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam, &Customer.LeadasiIdo, &Customer.ElkeszultIdo, &Customer.Osszeg)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
