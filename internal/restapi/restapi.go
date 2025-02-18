@@ -29,8 +29,9 @@ type customer struct {
 }
 
 type orderRow struct {
-	VasarloID int `json:"VasarloID"`
-	EtelID    int `json:"EtelID"`
+	VasarloID int     `json:"VasarloID"`
+	EtelID    int     `json:"EtelID"`
+	Ar        float64 `json:"Ar"`
 }
 
 type order struct {
@@ -99,7 +100,7 @@ func GetAllFoodByCustomer(c *gin.Context) {
 	defer orderRows.Close()
 	for orderRows.Next() {
 		var order orderRow
-		if err := orderRows.Scan(&order.VasarloID, &order.EtelID); err != nil {
+		if err := orderRows.Scan(&order.VasarloID, &order.EtelID, &order.Ar); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -109,6 +110,7 @@ func GetAllFoodByCustomer(c *gin.Context) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 			return
 		}
+		food.Ar = order.Ar
 		foods = append(foods, food)
 	}
 	if foods == nil {
@@ -175,7 +177,7 @@ func GetAllOrders(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var order orderRow
-		if err := rows.Scan(&order.VasarloID, &order.EtelID); err != nil {
+		if err := rows.Scan(&order.VasarloID, &order.EtelID, &order.Ar); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -209,7 +211,7 @@ func GetOrder(c *gin.Context) {
 	defer rows.Close()
 	for rows.Next() {
 		var order orderRow
-		if err := rows.Scan(&order.VasarloID, &order.EtelID); err != nil {
+		if err := rows.Scan(&order.VasarloID, &order.EtelID, &order.Ar); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -247,7 +249,7 @@ func PostOrder(c *gin.Context) {
 	newOrder.Customer.VasarloID, _ = newCustomer.LastInsertId()
 
 	for i, e := range newOrder.Foods {
-		_, err := Db.Exec("INSERT INTO Rendelesek (VasarloID, EtelID) VALUES (?, ?)", newOrder.Customer.VasarloID, e.EtelID)
+		_, err := Db.Exec("INSERT INTO Rendelesek (VasarloID, EtelID, Ar) VALUES (?, ?, ?)", newOrder.Customer.VasarloID, e.EtelID, e.Ar)
 		if err != nil {
 			fmt.Println("Failed to insert into Rendelesek table at: ", i)
 			fmt.Println(err)
