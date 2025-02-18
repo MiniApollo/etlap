@@ -8,7 +8,7 @@ CREATE TABLE Vasarlok (
 	   Telefonszam varchar(32) NOT NULL,
 	   LeadasiIdo DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	   ElkeszultIdo DATETIME,
-	   osszeg DECIMAL,
+	   Osszeg DECIMAL,
 	   PRIMARY KEY(VasarloID)
 );
 CREATE TABLE Etelek (
