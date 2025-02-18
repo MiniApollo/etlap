@@ -36,11 +36,13 @@ async function getData() {
     statusMessage.value = "";
     statusError.value = false;
 
+    // Fix bug, wrong food orders per customer
+    // Need to empty foodByCustomerList so foods don't get duplicated
+    foodsByCustomer.value = [];
+
     for (let i = 0; i < customers.value.length; i++) {
         foodsByCustomer.value.push(await getWithToken("order/food/" + customers.value[i].VasarloID));
     }
-    //console.log(customers.value);
-    //console.log(foodsByCustomer.value);
 }
 
 async function sendPassword() {
