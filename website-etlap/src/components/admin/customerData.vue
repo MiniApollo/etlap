@@ -10,12 +10,16 @@ const props = defineProps<{
 <template>
     <div>
         <ul class="flex gap-4 max-lg:gap-1 max-lg:flex-col md:justify-between">
-            <li class="basis-1/6 text-xl max-md:text-2xl font-semibold">{{ customer.Nev }}</li>
-            <li class="basis-1/5 text-xl overflow-auto">{{ customer.Email }}</li>
-            <li class="basis-1/5 text-xl overflow-auto">+{{ customer.Telefonszam }}</li>
-            <li class="text-xl overflow-auto">ID: {{ customer.VasarloID }}</li>
+            <li class="basis-1/6 text-xl max-md:text-2xl font-semibold overflow-auto">Név: <br class="max-lg:hidden">{{
+                customer.Nev }}</li>
+            <li class="basis-1/5 text-xl overflow-auto">Email: <br class="max-lg:hidden">{{ customer.Email }}</li>
+            <li class="basis-1/5 flex-grow-0 text-xl overflow-auto">TelefonSzám: <br class="max-lg:hidden"> +{{
+                customer.Telefonszam }}</li>
+            <li class="text-xl overflow-auto">ID: <br class="max-lg:hidden">{{ customer.VasarloID }}</li>
 
-            <li class="basis-1/5 text-2xl">{{ customer.LeadasiIdo }}</li>
+            <li class="basis-1/5 text-2xl">Leadás: <br class="max-lg:hidden">{{ customer.LeadasiIdo }}</li>
+            <li v-if="customer.ElkeszultIdo.Valid" class="basis-1/5 text-2xl">Elkészült: <br class="max-lg:hidden">{{
+                customer.ElkeszultIdo.String }}</li>
             <button
                 class="py-2 px-8 bg-blue-300 hover:bg-blue-400 cursor-pointer font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-start"
                 @click="$emit('orderComplete', customer, showCurrentOrders)">
@@ -31,7 +35,7 @@ const props = defineProps<{
                     <li class="my-1 text-2xl inline m-1">{{ food.Ar }} Ft</li>
                 </ul>
             </li>
-            <li class="my-2 text-2xl font-semibold">Összesen: {{ customer.Osszeg.Float64}} Ft</li>
+            <li class="my-2 text-2xl font-semibold">Összesen: {{ customer.Osszeg.Float64 }} Ft</li>
         </ul>
     </div>
 </template>
