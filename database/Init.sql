@@ -23,6 +23,7 @@ CREATE TABLE Rendelesek (
 	   VasarloID int NOT NULL,
 	   EtelID int NOT NULL,
 	   Ar DECIMAL NOT NULL,
+	   Darab int NOT NULL,
 	   FOREIGN KEY (VasarloID) REFERENCES Vasarlok(VasarloID),
 	   FOREIGN KEY (EtelID) REFERENCES Etelek(EtelID)
 );
