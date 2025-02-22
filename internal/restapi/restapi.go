@@ -28,15 +28,21 @@ type customer struct {
 	Osszeg       sql.NullFloat64 `json:"Osszeg"`
 }
 
-type orderRow struct {
+type order struct {
 	VasarloID int     `json:"VasarloID"`
 	EtelID    int     `json:"EtelID"`
 	Ar        float64 `json:"Ar"`
+	Darab     int     `json:"Darab"`
 }
 
-type order struct {
-	Customer customer `json:"Customer" binding:"required"`
-	Foods    []food   `json:"Foods" binding:"required"`
+type fullOrder struct {
+	Customer customer    `json:"Customer" binding:"required"`
+	Foods    []foodOrder `json:"Foods" binding:"required"`
+}
+
+type foodOrder struct {
+	EtelID int `json:"EtelID" binding:"required"`
+	Volume int `json:"Volume" binding:"required"`
 }
 
 type food struct {
@@ -99,8 +105,8 @@ func GetAllFoodByCustomer(c *gin.Context) {
 
 	defer orderRows.Close()
 	for orderRows.Next() {
-		var order orderRow
-		if err := orderRows.Scan(&order.VasarloID, &order.EtelID, &order.Ar); err != nil {
+		var order order
+		if err := orderRows.Scan(&order.VasarloID, &order.EtelID, &order.Ar, &order.Darab); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -172,12 +178,12 @@ func GetAllOrders(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
-	var orders []orderRow
+	var orders []order
 
 	defer rows.Close()
 	for rows.Next() {
-		var order orderRow
-		if err := rows.Scan(&order.VasarloID, &order.EtelID, &order.Ar); err != nil {
+		var order order
+		if err := rows.Scan(&order.VasarloID, &order.EtelID, &order.Ar, &order.Darab); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -206,12 +212,12 @@ func GetOrder(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
-	var orders []orderRow
+	var orders []order
 
 	defer rows.Close()
 	for rows.Next() {
-		var order orderRow
-		if err := rows.Scan(&order.VasarloID, &order.EtelID, &order.Ar); err != nil {
+		var order order
+		if err := rows.Scan(&order.VasarloID, &order.EtelID, &order.Ar, &order.Darab); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
@@ -228,30 +234,38 @@ func GetOrder(c *gin.Context) {
 func PostOrder(c *gin.Context) {
 	// 4 adatot lementeni adatbázisba: név, email, telefonszám, ételek listája
 	// Létrehozni egy új vevőt
-	// Kapcsoló táblába berakni az új vevő ID-ét és eggyesével az ételeket
+	// Kapcsoló táblába berakni az új vevő ID-ét és az ételeket
 
 	// TODO: Better Error handling
 	// Check for empty foods list
-	var newOrder order
-	if err := c.BindJSON(&newOrder); err != nil {
+	var newFullOrder fullOrder
+	if err := c.BindJSON(&newFullOrder); err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	newCustomer, err := Db.Exec("INSERT INTO Vasarlok (Nev, Email, Telefonszam) VALUES (?, ?, ?)", newOrder.Customer.Nev, newOrder.Customer.Email, newOrder.Customer.Telefonszam)
+	newCustomer, err := Db.Exec("INSERT INTO Vasarlok (Nev, Email, Telefonszam) VALUES (?, ?, ?)", newFullOrder.Customer.Nev, newFullOrder.Customer.Email, newFullOrder.Customer.Telefonszam)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
 	// _ ignore set variable
 	// https://stackoverflow.com/questions/27764421/what-is-underscore-comma-in-a-go-declaration
-	newOrder.Customer.VasarloID, _ = newCustomer.LastInsertId()
+	// Get ID, because auto generated
+	newFullOrder.Customer.VasarloID, _ = newCustomer.LastInsertId()
 
-	for i, e := range newOrder.Foods {
-		_, err := Db.Exec("INSERT INTO Rendelesek (VasarloID, EtelID, Ar) VALUES (?, ?, ?)", newOrder.Customer.VasarloID, e.EtelID, e.Ar)
+	for index, order := range newFullOrder.Foods {
+		var food food
+		err := Db.QueryRow("SELECT * FROM Etelek WHERE EtelID = ?", order.EtelID).Scan(&food.EtelID, &food.Nev, &food.Leiras, &food.KepPath, &food.Ar)
 		if err != nil {
-			fmt.Println("Failed to insert into Rendelesek table at: ", i)
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+
+		_, err = Db.Exec("INSERT INTO Rendelesek (VasarloID, EtelID, Ar, Darab) VALUES (?, ?, ?, ?)", newFullOrder.Customer.VasarloID, order.EtelID, food.Ar, order.Volume)
+		if err != nil {
+			fmt.Println("Failed to insert into Rendelesek table at: ", index)
 			fmt.Println(err)
 			c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 			return
@@ -259,20 +273,20 @@ func PostOrder(c *gin.Context) {
 	}
 
 	var sumPrice float64
-	err = Db.QueryRow("SELECT SUM(Etelek.Ar) FROM Rendelesek INNER JOIN Etelek ON Rendelesek.EtelID = Etelek.EtelID WHERE Rendelesek.VasarloID = ?", newOrder.Customer.VasarloID).Scan(&sumPrice)
+	err = Db.QueryRow("SELECT SUM(Etelek.Ar) FROM Rendelesek INNER JOIN Etelek ON Rendelesek.EtelID = Etelek.EtelID WHERE Rendelesek.VasarloID = ?", newFullOrder.Customer.VasarloID).Scan(&sumPrice)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
 
-	_, err = Db.Exec("UPDATE Vasarlok SET Osszeg = ? WHERE VasarloID = ?", sumPrice, newOrder.Customer.VasarloID)
+	_, err = Db.Exec("UPDATE Vasarlok SET Osszeg = ? WHERE VasarloID = ?", sumPrice, newFullOrder.Customer.VasarloID)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
-	newOrder.Customer.Osszeg = sql.NullFloat64{Float64: sumPrice, Valid: true}
+	newFullOrder.Customer.Osszeg = sql.NullFloat64{Float64: sumPrice, Valid: true}
 
-	c.IndentedJSON(http.StatusCreated, newOrder)
+	c.IndentedJSON(http.StatusCreated, newFullOrder)
 }
 
 func CompleteOrder(c *gin.Context) {
