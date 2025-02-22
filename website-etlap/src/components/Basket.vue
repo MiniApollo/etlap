@@ -27,6 +27,21 @@ const sumPrice = computed(() => {
 })
 
 function sendOrder() {
+    const foodOrders: any = [];
+    const foodCounts: any = {};
+
+    props.basketContent?.forEach((food) => {
+        foodCounts[food.EtelID] = (foodCounts[food.EtelID] || 0) + 1;
+    })
+    for (const [key, value] of Object.entries(foodCounts)) {
+        const order = {
+            // Convert to number, API accepts only numbers
+            "EtelID": Number(key),
+            "Volume": Number(value),
+        };
+        foodOrders.push(order);
+    }
+
     // POST
     fetch("http://localhost:8080/order", {
         method: "POST",
@@ -38,7 +53,7 @@ function sendOrder() {
         // https://stackoverflow.com/questions/17229418/jsonobject-why-jsonobject-changing-the-order-of-attributes
         body: JSON.stringify({
             Customer: newCustomer.value,
-            Foods: props.basketContent
+            Foods: foodOrders
         })
     })
 
