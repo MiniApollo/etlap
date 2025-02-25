@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 // https://vuejs.org/guide/components/props
@@ -7,6 +7,9 @@ const props = defineProps<{
     basketContent?: any[]
 }>()
 const emit = defineEmits(["torol", "emptyBasket"]);
+
+const foodOrders: any = ref([]);
+const foodCounts: any = ({});
 
 // Important to use the restapi json names
 const newCustomer = ref({
@@ -16,6 +19,7 @@ const newCustomer = ref({
 });
 
 const sumPrice = computed(() => {
+    countFood();
     if (!props.basketContent) {
         return 0;
     }
@@ -26,22 +30,30 @@ const sumPrice = computed(() => {
     return sum;
 })
 
-function sendOrder() {
-    const foodOrders: any = [];
-    const foodCounts: any = {};
+function filterFoodById(EtelID: any) {    
+    return props.basketContent?.find((element) => element.EtelID == EtelID)
+}
+
+function countFood() {
+    foodOrders.value = [];
+    foodCounts.value = {};
 
     props.basketContent?.forEach((food) => {
-        foodCounts[food.EtelID] = (foodCounts[food.EtelID] || 0) + 1;
+        foodCounts.value[food.EtelID] = (foodCounts.value[food.EtelID] || 0) + 1;
     })
-    for (const [key, value] of Object.entries(foodCounts)) {
+    for (const [key, value] of Object.entries(foodCounts.value)) {
         const order = {
             // Convert to number, API accepts only numbers
             "EtelID": Number(key),
             "Volume": Number(value),
         };
-        foodOrders.push(order);
+        foodOrders.value.push(order);
     }
+}
 
+function sendOrder() {
+    countFood();
+    
     // POST
     fetch("http://localhost:8080/order", {
         method: "POST",
@@ -53,7 +65,7 @@ function sendOrder() {
         // https://stackoverflow.com/questions/17229418/jsonobject-why-jsonobject-changing-the-order-of-attributes
         body: JSON.stringify({
             Customer: newCustomer.value,
-            Foods: foodOrders
+            Foods: foodOrders.value
         })
     })
 
@@ -65,6 +77,10 @@ function sendOrder() {
     };
     alert("Sikeres beküldés");
 }
+
+onMounted(() => {
+    countFood();
+});
 
 </script>
 
@@ -89,15 +105,16 @@ function sendOrder() {
                         class="mx-3 mt-3 p-2 bg-red-300 hover:bg-red-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-start"
                         @click="$emit('emptyBasket')">Kosár kiürítése</button>
                     <li class="m-3 rounded-md border-black border-2 flex max-sm:flex-col"
-                        v-for="(food, index) in basketContent">
+                        v-for="(food, index) in foodOrders">
                         <img class="w-full basis-1/2 rounded-md"
-                            :src="'http://localhost:8080/assets/foods/' + food.KepPath" :alt="food.Nev + ' kép'">
+                            :src="'http://localhost:8080/assets/foods/' + filterFoodById(food.EtelID).KepPath" :alt="filterFoodById(food.EtelID).Nev + ' kép'">
                         <div class="m-3 basis-1/2">
-                            <h3 class="text-4xl font-semibold my-2">{{ food.Nev }}</h3>
-                            <p class="lg:min-h-10">{{ food.Leiras }}</p>
-                            <p class="my-4 text-2xl font-semibold">{{ food.Ar }} Ft</p>
+                            <h3 class="text-4xl font-semibold my-2">{{ filterFoodById(food.EtelID).Nev }}</h3>
+                            <p class="lg:min-h-10">{{ filterFoodById(food.EtelID).Leiras }}</p>
+                            <p class="text-xl my-2">{{ food.Volume }} darab x {{ filterFoodById(food.EtelID).Ar }} Ft</p>
+                            <p class="my-1 text-2xl font-semibold">{{ filterFoodById(food.EtelID).Ar * food.Volume }} Ft</p>
                             <button
-                                class="p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
+                                class="mt-4 p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
                                 @click="$emit('torol', index)">Törlés</button>
                         </div>
                     </li>
