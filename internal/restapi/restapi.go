@@ -44,6 +44,10 @@ type foodOrder struct {
 	EtelID int `json:"EtelID" binding:"required"`
 	Volume int `json:"Volume" binding:"required"`
 }
+type foodWithVolume struct {
+	Food   food `json:"Food" binding:"required"`
+	Volume int  `json:"Volume" binding:"required"`
+}
 
 type food struct {
 	EtelID  int     `json:"EtelID"`
@@ -96,12 +100,12 @@ func GetFood(c *gin.Context) {
 }
 
 func GetAllFoodByCustomer(c *gin.Context) {
-	orderRows, err := Db.Query("SELECT * FROM Rendelesek WHERE VasarloId = ? ORDER BY VasarloID, EtelID", c.Param("id"))
+	orderRows, err := Db.Query("SELECT * FROM Rendelesek WHERE VasarloId = ? ORDER BY VasarloID, Darab", c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
-	var foods []food
+	var foods []foodWithVolume
 
 	defer orderRows.Close()
 	for orderRows.Next() {
@@ -117,7 +121,8 @@ func GetAllFoodByCustomer(c *gin.Context) {
 			return
 		}
 		food.Ar = order.Ar
-		foods = append(foods, food)
+		foodWithVolume := foodWithVolume{Food: food, Volume: order.Darab}
+		foods = append(foods, foodWithVolume)
 	}
 	if foods == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Empty database"})
@@ -273,7 +278,7 @@ func PostOrder(c *gin.Context) {
 	}
 
 	var sumPrice float64
-	err = Db.QueryRow("SELECT SUM(Etelek.Ar) FROM Rendelesek INNER JOIN Etelek ON Rendelesek.EtelID = Etelek.EtelID WHERE Rendelesek.VasarloID = ?", newFullOrder.Customer.VasarloID).Scan(&sumPrice)
+	err = Db.QueryRow("SELECT SUM(Ar*Darab) FROM Rendelesek WHERE VasarloID = ?", newFullOrder.Customer.VasarloID).Scan(&sumPrice)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
