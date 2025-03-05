@@ -15,7 +15,7 @@ const props = defineProps<{
             <li class="basis-1/5 text-xl overflow-auto">Email: <br class="max-lg:hidden">{{ customer.Email }}</li>
             <li class="basis-1/5 flex-grow-0 text-xl overflow-auto">TelefonSzám: <br class="max-lg:hidden"> +{{
                 customer.Telefonszam }}</li>
-            <li class="text-xl overflow-auto">ID: <br class="max-lg:hidden">{{ customer.VasarloID }}</li>
+            <li class="text-xl overflow-auto px-1">ID: <br class="max-lg:hidden">{{ customer.VasarloID }}</li>
 
             <li class="basis-1/5 text-2xl">Leadás: <br class="max-lg:hidden">{{ customer.LeadasiIdo }}</li>
             <li v-if="customer.ElkeszultIdo.Valid" class="basis-1/5 text-2xl">Elkészült: <br class="max-lg:hidden">{{
