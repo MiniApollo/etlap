@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/MiniApollo/etlap/internal/restapi"
@@ -83,6 +84,12 @@ func main() {
 	router.GET("/customer", restapi.CheckAdminToken, restapi.GetAllCustomer)
 	router.GET("/customer/:id", restapi.CheckAdminToken, restapi.GetCustomer)
 	router.PATCH("/customer/:id", restapi.CheckAdminToken, restapi.CompleteOrder)
+
+	// 404 page
+	router.NoRoute(func(c *gin.Context) {
+		c.AbortWithStatus(http.StatusNotFound)
+		c.File("./assets/index.html")
+	})
 
 	router.Run("localhost:8080")
 }
