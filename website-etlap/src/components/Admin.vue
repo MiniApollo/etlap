@@ -46,7 +46,7 @@ async function getData() {
 }
 
 async function sendPassword() {
-    const response = await fetch("http://localhost:8080/admin", {
+    const response = await fetch("http://localhost:8080/auth", {
         method: "GET",
         headers: {
             'Authorization': 'Bearer ' + btoa(password.value),

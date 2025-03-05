@@ -70,7 +70,7 @@ func main() {
 	router.POST("/order", restapi.PostOrder)
 
 	// Admin API
-	router.GET("/admin", restapi.CheckAdminPassword)
+	router.GET("/auth", restapi.CheckAdminPassword)
 
 	router.POST("/food", restapi.CheckAdminToken, restapi.PostFood)
 	router.PATCH("/food/:id", restapi.CheckAdminToken, restapi.UpdateFood)
