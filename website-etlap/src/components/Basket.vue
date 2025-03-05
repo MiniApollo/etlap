@@ -13,7 +13,7 @@ const foodCounts: any = ({});
 
 // Important to use the restapi json names
 const newCustomer = ref({
-    Nev : "",
+    Nev: "",
     Email: "",
     Telefonszam: "",
 });
@@ -30,7 +30,7 @@ const sumPrice = computed(() => {
     return sum;
 })
 
-function filterFoodById(EtelID: any) {    
+function filterFoodById(EtelID: any) {
     return props.basketContent?.find((element) => element.EtelID == EtelID)
 }
 
@@ -51,31 +51,38 @@ function countFood() {
     }
 }
 
-function sendOrder() {
+async function sendOrder() {
     countFood();
-    
-    // POST
-    fetch("http://localhost:8080/order", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        },
-        // Mixed Json order
-        // https://stackoverflow.com/questions/3948206/json-order-mixed-up
-        // https://stackoverflow.com/questions/17229418/jsonobject-why-jsonobject-changing-the-order-of-attributes
-        body: JSON.stringify({
-            Customer: newCustomer.value,
-            Foods: foodOrders.value
+    try {
+        // POST
+        const response = await fetch("http://localhost:8080/order", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            // Mixed Json order
+            // https://stackoverflow.com/questions/3948206/json-order-mixed-up
+            // https://stackoverflow.com/questions/17229418/jsonobject-why-jsonobject-changing-the-order-of-attributes
+            body: JSON.stringify({
+                Customer: newCustomer.value,
+                Foods: foodOrders.value
+            })
         })
-    })
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
 
-    emit("emptyBasket");
-    newCustomer.value = {
-        Nev: "",
-        Email: "",
-        Telefonszam: "",
-    };
-    alert("Sikeres beküldés");
+        emit("emptyBasket");
+        newCustomer.value = {
+            Nev: "",
+            Email: "",
+            Telefonszam: "",
+        };
+        alert("Sikeres beküldés");
+    } catch (error: any) {
+        alert("Sikertelen beküldés\n" + error.message);
+        console.error(error.message);
+    }
 }
 
 onMounted(() => {
@@ -107,12 +114,15 @@ onMounted(() => {
                     <li class="m-3 rounded-md border-black border-2 flex max-sm:flex-col"
                         v-for="(food, index) in foodOrders">
                         <img class="w-full basis-1/2 rounded-md"
-                            :src="'http://localhost:8080/assets/foods/' + filterFoodById(food.EtelID).KepPath" :alt="filterFoodById(food.EtelID).Nev + ' kép'">
+                            :src="'http://localhost:8080/assets/foods/' + filterFoodById(food.EtelID).KepPath"
+                            :alt="filterFoodById(food.EtelID).Nev + ' kép'">
                         <div class="m-3 basis-1/2">
                             <h3 class="text-4xl font-semibold my-2">{{ filterFoodById(food.EtelID).Nev }}</h3>
                             <p class="lg:min-h-10">{{ filterFoodById(food.EtelID).Leiras }}</p>
-                            <p class="text-xl my-2">{{ food.Volume }} darab x {{ filterFoodById(food.EtelID).Ar }} Ft</p>
-                            <p class="my-1 text-2xl font-semibold">{{ filterFoodById(food.EtelID).Ar * food.Volume }} Ft</p>
+                            <p class="text-xl my-2">{{ food.Volume }} darab x {{ filterFoodById(food.EtelID).Ar }} Ft
+                            </p>
+                            <p class="my-1 text-2xl font-semibold">{{ filterFoodById(food.EtelID).Ar * food.Volume }} Ft
+                            </p>
                             <button
                                 class="mt-4 p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
                                 @click="$emit('torol', index)">Törlés</button>
@@ -125,16 +135,19 @@ onMounted(() => {
                     <h1 class="font-semibold text-4xl mb-4">Rendelési adatok</h1>
 
                     <label for="Name">Név:</label>
-                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="text" id="Name" v-model.trim="newCustomer.Nev" required
-                        autocomplete="off" maxlength="128">
+                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                        type="text" id="Name" v-model.trim="newCustomer.Nev" required autocomplete="off"
+                        maxlength="128">
 
                     <label for="Email">Email Cím:</label>
-                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="email" id="Email" placeholder="name@example.com"
-                        v-model.trim="newCustomer.Email" required autocomplete="off" maxlength="128">
+                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                        type="email" id="Email" placeholder="name@example.com" v-model.trim="newCustomer.Email" required
+                        autocomplete="off" maxlength="128">
 
                     <label for="PhoneNumber">Telefonszám:</label>
-                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none" type="text" id="PhoneNumber"
-                        v-model.trim="newCustomer.Telefonszam" required autocomplete="off" maxlength="32">
+                    <input class="p-1 rounded-lg shadow-sm border-2 border-gray-500 focus:border-blue-500 outline-none"
+                        type="text" id="PhoneNumber" v-model.trim="newCustomer.Telefonszam" required autocomplete="off"
+                        maxlength="32">
 
                     <h1 class="font-semibold text-lg mb-4">Összesen: {{ sumPrice }} Ft</h1>
 
