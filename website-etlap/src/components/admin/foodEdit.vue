@@ -49,9 +49,9 @@ function resetNewFood() {
             class="mx-4 py-3 px-12 max-md:px-16 max-md:w-1/2 my-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
             @click="resetNewFood();" v-else-if="isAddNewFood">Vissza</button>
 
-        <div v-if="!isAddNewFood">
-            <h2 v-if="foods === undefined || foods.length == 0">
-                Hiba történt: <br>
+        <div class="m-4" v-if="!isAddNewFood">
+            <h2 class="text-4xl font-semibold bg-gray-300 rounded-3xl p-8" v-if="foods === undefined || foods.length == 0">
+                Hiba történt <br>
                 {{ statusMessage }}
             </h2>
             <ul class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3" v-else>
