@@ -211,9 +211,9 @@ onMounted(() => {
                     <p class="p-2 bg-blue-300 hover:bg-blue-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
                         v-else-if="!showCurrentOrders">Jelenlegi rendelések megjelenítése</p>
                 </button>
-                <h1 class="my-4 px-5 text-5xl font-semibold" v-if="showCurrentOrders">Jelenlegi Rendelések: {{
+                <h1 class="my-4 px-5 text-5xl font-semibold" v-if="showCurrentOrders">Jelenlegi rendelések: {{
                     customers.length }}</h1>
-                <h1 class="my-4 px-5 text-5xl font-semibold" v-else-if="!showCurrentOrders">Korrábbi Rendelések: {{
+                <h1 class="my-4 px-5 text-5xl font-semibold" v-else-if="!showCurrentOrders">Korábbi rendelések: {{
                     customers.length }}</h1>
                 <ul class="m-4">
                     <h3 class="text-4xl font-semibold bg-gray-300 rounded-3xl p-8" v-if="statusError">{{ statusMessage

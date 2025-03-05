@@ -41,7 +41,7 @@ function resetNewFood() {
 </script>
 <template>
     <div>
-        <h1 v-if="!isAddNewFood" class="my-4 px-5 text-5xl font-semibold">Ételek Listája</h1>
+        <h1 v-if="!isAddNewFood" class="my-4 px-5 text-5xl font-semibold">Ételek listája</h1>
         <button
             class="mx-4 p-3 bg-green-300 hover:bg-green-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500"
             @click="isAddNewFood = true" v-if="!isAddNewFood">Új Étel hozzáadása</button>
