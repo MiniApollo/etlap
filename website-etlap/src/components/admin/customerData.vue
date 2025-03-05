@@ -32,7 +32,7 @@ const props = defineProps<{
             <li v-for="foodWithVolume in foodsByCustomer[index]">
                 <ul>
                     <li class="my-1 text-2xl inline m-1">{{ foodWithVolume.Volume }} {{ foodWithVolume.Food.Nev }}</li>
-                    <li class="my-1 text-2xl inline m-1">{{ foodWithVolume.Food.Ar * foodWithVolume.Volume}} Ft</li>
+                    <li class="my-1 text-2xl inline m-1">{{ foodWithVolume.Food.Ar * foodWithVolume.Volume }} Ft</li>
                 </ul>
             </li>
             <li class="my-2 text-2xl font-semibold">Összesen: {{ customer.Osszeg.Float64 }} Ft</li>

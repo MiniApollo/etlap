@@ -50,7 +50,8 @@ function resetNewFood() {
             @click="resetNewFood();" v-else-if="isAddNewFood">Vissza</button>
 
         <div class="m-4" v-if="!isAddNewFood">
-            <h2 class="text-4xl font-semibold bg-gray-300 rounded-3xl p-8" v-if="foods === undefined || foods.length == 0">
+            <h2 class="text-4xl font-semibold bg-gray-300 rounded-3xl p-8"
+                v-if="foods === undefined || foods.length == 0">
                 Hiba történt <br>
                 {{ statusMessage }}
             </h2>
