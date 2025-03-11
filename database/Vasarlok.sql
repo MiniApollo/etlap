@@ -1,7 +1,5 @@
-INSERT INTO Vasarlok (Nev, Email, Telefonszam) VALUES
-("Kis Róbert", "kisrobert@example.com", "06201234567"),
-("Kovács Bence", "kovacsbence@gmail.com", "06203202368"),
-("Nagy Attila", "nagyattila@example.com", "06704321441"),
-("Fodor Cecília", "fodorcecilia@hotmail.com", "06201182038"),
-("Bob Nagy", "bob@example.com", "06206429092"),
-("Sós Hanna", "hannasos@example.com", "06205849373");
+INSERT INTO Vasarlok (Nev, Email, Telefonszam, ElkeszultIdo, Osszeg) VALUES
+("Kis Róbert", "kisrobert@example.com", "06201234567", NULL, 1650),
+("Kovács Bence", "kovacsbence@gmail.com", "06203202368", NULL, 7200),
+("Nagy Attila", "nagyattila@example.com", "06704321441", DATE_ADD(NOW(), INTERVAL 1 MINUTE), 6200),
+("Fodor Cecília", "fodorcecilia@hotmail.com", "06201182038", DATE_ADD(NOW(), INTERVAL 1 MINUTE), 17900);
