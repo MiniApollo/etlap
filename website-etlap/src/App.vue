@@ -9,7 +9,13 @@ function addToBasket(food: any) {
 }
 
 // https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array-in-javascript
-function deleteFromBasket(index: Number) {
+function deleteFromBasket(EtelID: any) {
+  const index: any = basketContent.value.findIndex((element: any) => element.EtelID == EtelID);
+  
+  if (index == -1) {
+    console.error("Item not found in basket");
+    return
+  }
   basketContent.value.splice(index, 1);
   saveBasket();
 }
