@@ -1,4 +1,9 @@
-ADMINPASS=asd123
-JWT_SECRET=asd123
+PORT=localhost:8080
+
+DB_PORT=localhost:3306
+DBName=etlap
 DBUSER=root
 DBPASS=
+
+ADMINPASS=asd123
+JWT_SECRET=poganysuli
