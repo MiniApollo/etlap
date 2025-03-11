@@ -61,7 +61,7 @@ onMounted(() => {
     </main>
     <footer class="flex justify-center max-sm:flex-col max-sm:items-center gap-2 text-xl px-4 mt-2">
       <p>© {{ currentYear }}. Minden jog fenntartva.</p>
-      <p> Vizsga feladat céljára készült.</p>
+      <p> Vizsga feladat céljából készült.</p>
       <a href="https://github.com/MiniApollo/etlap" class="hover:text-blue-500 hover:underline flex gap-1"
         target="_blank">
         <img class="h-6" src="/assets/github-mark.png" alt="Github logo">Github</a>
