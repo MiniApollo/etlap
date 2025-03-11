@@ -31,7 +31,7 @@ const sumPrice = computed(() => {
 })
 
 function filterFoodById(EtelID: any) {
-    return props.basketContent?.find((element) => element.EtelID == EtelID)
+    return props.basketContent?.find((element) => element.EtelID == EtelID);
 }
 
 function countFood() {
@@ -125,7 +125,7 @@ onMounted(() => {
                             </p>
                             <button
                                 class="mt-4 p-2 bg-slate-300 font-semibold border-2 rounded-2xl border-black text-black hover:scale-110 transition-all duration-500"
-                                @click="$emit('torol', index)">Törlés</button>
+                                @click="$emit('torol', food.EtelID); countFood()">Törlés</button>
                         </div>
                     </li>
                 </ul>
