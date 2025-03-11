@@ -69,12 +69,6 @@ func GetOrder(c *gin.Context) {
 }
 
 func PostOrder(c *gin.Context) {
-	// 4 adatot lementeni adatbázisba: név, email, telefonszám, ételek listája
-	// Létrehozni egy új vevőt
-	// Kapcsoló táblába berakni az új vevő ID-ét és az ételeket
-
-	// TODO: Better Error handling
-	// Check for empty foods list
 	var newFullOrder fullOrder
 	if err := c.BindJSON(&newFullOrder); err != nil {
 		fmt.Println(err)
@@ -134,7 +128,7 @@ func CompleteOrder(c *gin.Context) {
 	}
 	var isDoneDateTime sql.NullString
 	if isDone["Elkeszult"] {
-		// About why this date
+		// About why this date format
 		// https://pkg.go.dev/time#Time.Format
 		isDoneDateTime = sql.NullString{String: time.Now().Format("2006-01-02 15:04:05"), Valid: true}
 	}
