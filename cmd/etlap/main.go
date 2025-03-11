@@ -61,8 +61,12 @@ func main() {
 	router.Use(cors.New(config))
 
 	// User API
-	router.StaticFile("/", "./assets/index.html")
 	router.StaticFile("/favicon.ico", "./assets/favicon.ico")
+	routes := []string{"/", "/etelek", "/kosar", "/admin"}
+	for _, url := range routes {
+		router.StaticFile(url, "./assets/index.html")
+	}
+
 	router.Static("/assets", "./assets/")
 
 	router.GET("/food", restapi.GetAllFood)
