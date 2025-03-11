@@ -31,8 +31,8 @@ func main() {
 		User:   os.Getenv("DBUSER"),
 		Passwd: os.Getenv("DBPASS"),
 		Net:    "tcp",
-		Addr:   "localhost:3306",
-		DBName: "etlap",
+		Addr:   os.Getenv("DB_PORT"),
+		DBName: os.Getenv("DBName"),
 		// Needed for mysql.config
 		// https://stackoverflow.com/questions/70757210/how-do-i-connect-to-a-mysql-instance-without-using-the-password
 		AllowNativePasswords: true,
@@ -91,5 +91,9 @@ func main() {
 		c.File("./assets/index.html")
 	})
 
-	router.Run("localhost:8080")
+	port := os.Getenv("PORT")
+	if len(port) <= 0 {
+		port = "localhost:8080"
+	}
+	router.Run(port)
 }
