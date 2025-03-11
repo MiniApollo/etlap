@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 
 const basketContent: any = ref([]);
+const currentYear = ref(new Date().getFullYear());
 
 function addToBasket(food: any) {
   basketContent.value.push(food);
@@ -36,8 +37,6 @@ onMounted(() => {
     basketContent.value = JSON.parse(localStorage.getItem("basketContent") || "{}");
   }
 });
-
-
 </script>
 
 <template>
@@ -60,6 +59,13 @@ onMounted(() => {
       <RouterView @kosarhoz="addToBasket" @torol="deleteFromBasket" @empty-basket="emptyBasket"
         :basketContent="basketContent" />
     </main>
+    <footer class="flex justify-center max-sm:flex-col max-sm:items-center gap-2 text-xl px-4 mt-2">
+      <p>© {{ currentYear }}. Minden jog fenntartva.</p>
+      <p> Vizsga feladat céljára készült.</p>
+      <a href="https://github.com/MiniApollo/etlap" class="hover:text-blue-500 hover:underline flex gap-1"
+        target="_blank">
+        <img class="h-6" src="/assets/github-mark.png" alt="Github logo">Github</a>
+    </footer>
   </div>
 
 </template>
