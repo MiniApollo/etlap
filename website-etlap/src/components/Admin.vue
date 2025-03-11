@@ -46,7 +46,7 @@ async function getData() {
 }
 
 async function sendPassword() {
-    const response = await fetch("http://localhost:8080/auth", {
+    const response = await fetch("/auth", {
         method: "GET",
         headers: {
             'Authorization': 'Bearer ' + btoa(password.value),
@@ -76,7 +76,7 @@ async function sendPassword() {
 
 async function getWithToken(url: String) {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    const response = await fetch("http://localhost:8080/" + url, {
+    const response = await fetch("/" + url, {
         method: "GET",
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
@@ -92,8 +92,7 @@ async function getWithToken(url: String) {
 }
 
 async function orderDone(customer: any, isDone: boolean) {
-
-    await fetch("http://localhost:8080/customer/" + customer.VasarloID, {
+    await fetch("/customer/" + customer.VasarloID, {
         method: "PATCH",
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
@@ -117,7 +116,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
     if (!confirm("Biztosan feltöltöd?")) {
         return;
     }
-    const response = await fetch("http://localhost:8080/food" + etelID, {
+    const response = await fetch("/food/" + etelID, {
         method: requestType,
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
@@ -142,7 +141,7 @@ async function deleteFood(EtelID: string) {
     if (!confirm("Biztosan törlöd?")) {
         return;
     }
-    const response = await fetch("http://localhost:8080/food/" + EtelID, {
+    const response = await fetch("/food/" + EtelID, {
         method: "DELETE",
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
@@ -217,7 +216,7 @@ onMounted(() => {
                     customers.length }}</h1>
                 <ul class="m-4">
                     <h3 class="text-4xl font-semibold bg-gray-300 rounded-3xl p-8" v-if="statusError">{{ statusMessage
-                        }}</h3>
+                    }}</h3>
                     <li v-if="Array.isArray(customers)" v-for="(customer, index) in customers"
                         class="m-1 p-1 border border-black bg-slate-300 rounded-xl">
                         <CustomerData @orderComplete="orderDone" :customer="customer"

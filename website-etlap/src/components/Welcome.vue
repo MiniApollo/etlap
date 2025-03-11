@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
@@ -15,7 +14,7 @@
                 to="/etelek">Étlap megtekíntése</RouterLink>
         </div>
         <div class="mx-2 my-4 lg:mx-6">
-            <img class="border-4 rounded-md" src="http://localhost:8080/assets/foods/singaporeScaled.jpg"
+            <img class="border-4 rounded-md" src="/assets/foods/singaporeScaled.jpg"
                 alt="Rustic food">
         </div>
         <div class="mx-1 lg:mx-16 text-center md:my-6">
@@ -26,7 +25,7 @@
             </p>
         </div>
         <div class="mx-2 my-2 lg:mx-6">
-            <img class="border-4 rounded-md" src="http://localhost:8080/assets/foods/platter-2009590_1920.jpg"
+            <img class="border-4 rounded-md" src="/assets/foods/platter-2009590_1920.jpg"
                 alt="Rustic plate">
         </div>
     </div>

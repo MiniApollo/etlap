@@ -9,7 +9,7 @@ async function getAllFood() {
     statusHeader.value = "";
     status.value = "";
 
-    fetch("http://localhost:8080/food")
+    fetch("/food")
         .then(res => res.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -42,7 +42,7 @@ onMounted(() => {
         <ul v-else class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <li v-for="food in foods" class="m-3 rounded-md border-black border-2 flex flex-col">
                 <img class="object-cover w-full flex-grow basis-2/3 rounded-md"
-                    :src="'http://localhost:8080/assets/foods/' + food.KepPath" :alt="food.Nev + ' kép'">
+                    :src="'/assets/foods/' + food.KepPath" :alt="food.Nev + ' kép'">
                 <div class="m-3">
                     <h3 class="text-4xl font-semibold my-2">{{ food.Nev }}</h3>
                     <p class="lg:min-h-10">{{ food.Leiras }}</p>

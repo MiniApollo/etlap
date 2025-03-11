@@ -55,7 +55,7 @@ async function sendOrder() {
     countFood();
     try {
         // POST
-        const response = await fetch("http://localhost:8080/order", {
+        const response = await fetch("/order", {
             method: "POST",
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -112,9 +112,9 @@ onMounted(() => {
                         class="mx-3 mt-3 p-2 bg-red-300 hover:bg-red-400 font-semibold border-2 rounded-2xl border-black text-black transition-all duration-500 self-start"
                         @click="$emit('emptyBasket')">Kosár kiürítése</button>
                     <li class="m-3 rounded-md border-black border-2 flex max-sm:flex-col"
-                        v-for="(food, index) in foodOrders">
+                        v-for="(food) in foodOrders">
                         <img class="w-full basis-1/2 rounded-md"
-                            :src="'http://localhost:8080/assets/foods/' + filterFoodById(food.EtelID).KepPath"
+                            :src="'/assets/foods/' + filterFoodById(food.EtelID).KepPath"
                             :alt="filterFoodById(food.EtelID).Nev + ' kép'">
                         <div class="m-3 basis-1/2">
                             <h3 class="text-4xl font-semibold my-2">{{ filterFoodById(food.EtelID).Nev }}</h3>
