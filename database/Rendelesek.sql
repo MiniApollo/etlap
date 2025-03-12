@@ -9,4 +9,4 @@ INSERT INTO Rendelesek(VasarloID, EtelID, Ar, Darab) VALUES
 
 (4, 4, 850, 2),
 (4, 6, 3100, 2),
-(4, 7, 2500, 4);
+(4, 7, 700, 4);
