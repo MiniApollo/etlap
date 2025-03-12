@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Visszadja az összes rendelést.
 func GetAllOrders(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Rendelesek ORDER BY VasarloID, EtelID")
 	if err != nil {
@@ -43,6 +44,7 @@ func GetAllOrders(c *gin.Context) {
 	c.JSON(http.StatusOK, orders)
 }
 
+// Visszaad egy rendelést Vásárló ID alapján
 func GetOrder(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Rendelesek WHERE VasarloId = ? ORDER BY VasarloID, EtelID", c.Param("id"))
 	if err != nil {
@@ -68,6 +70,7 @@ func GetOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, orders)
 }
 
+// Feltölti az adatbázisba a vásárló adatait és a rendelések táblába a rendeléseket.
 func PostOrder(c *gin.Context) {
 	var newFullOrder fullOrder
 	if err := c.BindJSON(&newFullOrder); err != nil {
@@ -120,6 +123,7 @@ func PostOrder(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newFullOrder)
 }
 
+// Beállítja mikor készült el a rendelés.
 func CompleteOrder(c *gin.Context) {
 	var isDone map[string]bool
 	if err := c.BindJSON(&isDone); err != nil {

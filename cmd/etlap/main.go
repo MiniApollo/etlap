@@ -1,3 +1,11 @@
+// Main fájl elindítja az etlap webszervert.
+//
+// A szerver az alábbi lépésekkel indul el:
+//  1. A környezeti változók beolvasása.
+//  2. Csatlakozás a MySQL szerverhez.
+//  3. CORS konfiguráció beállítása.
+//  4. API végpontok regisztrálása.
+//  5. A webszerver indítása a konfigurált porton.
 package main
 
 import (

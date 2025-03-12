@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Visszaadja az összes vásárlót az adatbázisból.
 func GetAllCustomer(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Vasarlok")
 	if err != nil {
@@ -36,6 +37,7 @@ func GetAllCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, customers)
 }
 
+// Visszaadja az összes Vásárlót attól függően hogy készen van a rendelése.
 func GetAllCustomerByOrder(c *gin.Context) {
 	var isDoneParam string = c.DefaultQuery("isDone", "false")
 
@@ -78,7 +80,7 @@ func GetAllCustomerByOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, customers)
 }
 
-// There are some example users, skip some IDs when using the API
+// Visszaad egy Vevőt ID alapján.
 func GetCustomer(c *gin.Context) {
 	var Customer customer
 	err := Db.QueryRow("SELECT * FROM Vasarlok WHERE VasarloID = ?", c.Param("id")).Scan(&Customer.VasarloID, &Customer.Nev, &Customer.Email, &Customer.Telefonszam, &Customer.LeadasiIdo, &Customer.ElkeszultIdo, &Customer.Osszeg)

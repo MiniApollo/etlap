@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Capital Letters mean public
+// Visszaadja az összes ételt az adatbázisból
 func GetAllFood(c *gin.Context) {
 	rows, err := Db.Query("SELECT * FROM Etelek")
 	if err != nil {
@@ -38,6 +38,7 @@ func GetAllFood(c *gin.Context) {
 	c.JSON(http.StatusOK, foods)
 }
 
+// Egy ételt visszaad URL-ben megadott ID alapján.
 func GetFood(c *gin.Context) {
 	var food food
 	err := Db.QueryRow("SELECT * FROM Etelek WHERE EtelID = ?", c.Param("id")).Scan(&food.EtelID, &food.Nev, &food.Leiras, &food.KepPath, &food.Ar)
@@ -49,6 +50,7 @@ func GetFood(c *gin.Context) {
 	c.JSON(http.StatusOK, food)
 }
 
+// Visszaadja az összes rendelt étel mennyiségét és annak adatát a Vásárló ID-je alapján.
 func GetAllFoodByCustomer(c *gin.Context) {
 	orderRows, err := Db.Query("SELECT * FROM Rendelesek WHERE VasarloId = ? ORDER BY VasarloID, Darab", c.Param("id"))
 	if err != nil {
@@ -87,6 +89,7 @@ func GetAllFoodByCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, foods)
 }
 
+// Létrehoz egy új ételt a body-ban megadott adatok alapján.
 func PostFood(c *gin.Context) {
 	var newFood food
 	if err := c.BindJSON(&newFood); err != nil {
@@ -103,6 +106,7 @@ func PostFood(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newFood)
 }
 
+// Módosít egy ételt ID alapján.
 func UpdateFood(c *gin.Context) {
 	var newFood food
 	if err := c.BindJSON(&newFood); err != nil {
@@ -118,6 +122,7 @@ func UpdateFood(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newFood)
 }
 
+// Kitöröl egy ételt ID alapján.
 func DeleteFood(c *gin.Context) {
 	_, err := Db.Exec("DELETE FROM Etelek WHERE EtelID=?", c.Param("id"))
 	if err != nil {

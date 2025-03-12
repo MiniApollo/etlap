@@ -12,9 +12,17 @@ import (
 )
 
 var AdminPassword string
+
+// JWT token titkosításához.
 var JwtSecret []byte
 
+// Ellenőrzi a kapott base64-ba kódolt jelszót.
+// GET kérés Authorization fejléc alapján.
+//
+// Visszaad egy JWT tokent, ha megegyezik a megadott jelszóval.
+//
 // https://pkg.go.dev/github.com/golang-jwt/jwt/v5#section-readme
+//
 // https://ututuv.medium.com/building-user-authentication-and-authorisation-api-in-go-using-gin-and-gorm-93dfe38e0612
 func CheckAdminPassword(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
@@ -51,6 +59,7 @@ func CheckAdminPassword(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": signedToken})
 }
 
+// Ellenőrzi a kapott base64-ba kódolt JWT tokent
 func CheckAdminToken(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 
