@@ -123,7 +123,6 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
             "Content-type": "application/json; charset=UTF-8"
         },
         body: JSON.stringify({
-            EtelID: Number(food.EtelID),
             Nev: food.Nev,
             Leiras: food.Leiras,
             KepPath: food.KepPath,
