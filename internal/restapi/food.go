@@ -114,7 +114,7 @@ func UpdateFood(c *gin.Context) {
 		return
 	}
 
-	_, err := Db.Exec("UPDATE Etelek SET Nev=?, Leiras=?, Kep=?, Ar=? WHERE EtelID=?", newFood.Nev, newFood.Leiras, newFood.KepPath, newFood.Ar, newFood.EtelID)
+	_, err := Db.Exec("UPDATE Etelek SET Nev=?, Leiras=?, Kep=?, Ar=? WHERE EtelID=?", newFood.Nev, newFood.Leiras, newFood.KepPath, newFood.Ar, c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
