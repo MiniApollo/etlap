@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import FoodEdit from './admin/foodEdit.vue';
-import CustomerData from './admin/customerData.vue';
+import FoodEdit from './admin/FoodEdit.vue';
+import CustomerData from './admin/CustomerData.vue';
 
 const password = ref("");
 const isLoggedIn = ref(false);
