@@ -1,0 +1,44 @@
+@hostname = http://localhost:8080
+
+### GET Welcome page
+GET {{hostname}}/
+
+### GET etelek page
+GET {{hostname}}/etelek
+
+### GET kosar page
+GET {{hostname}}/kosar
+
+### GET admin page
+GET {{hostname}}/admin
+
+### GET favicon.jpg 
+GET {{hostname}}/favicon.jpg
+
+### GET food list
+GET {{hostname}}/food
+
+### GET one food 1
+GET {{hostname}}/food/1
+
+### GET one food 3
+GET {{hostname}}/food/3
+
+### POST order
+POST {{hostname}}/order
+Content-type: "application/json; charset=UTF-8"
+
+{
+    "Customer":{
+        "Nev":"Teszt Bob",
+        "Email":"tesztbob@example.com",
+        "Telefonszam":"123123123"
+    },
+    "Foods":[
+        {"EtelID":1,"Volume":2},
+        {"EtelID":2,"Volume":1}
+    ]
+}
+
+### 404 page
+GET {{hostname}}/asd

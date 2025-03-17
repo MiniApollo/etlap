@@ -1,0 +1,121 @@
+@hostname = http://localhost:8080
+
+### Base64 asd123 jelszó
+@adminPassBase64 = YXNkMTIz
+
+# Manuális jwt token változó beállítás szükséges a többi végpont használatához base64 kódolással
+# Expired Token
+@token = ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxlSEFpT2pFM05ESXpNamN4TlRCOS42c3dmV05kX1ozcUQzcThFU3dFaGs2MklzQ3VzWmplZFZGWmNITVlhYXdn
+# Valid Token
+#@token = 
+
+### GET JWT token with admin password 
+GET {{hostname}}/auth
+Authorization: Bearer {{adminPassBase64}}
+Content-type: "application/json; charset=UTF-8"
+
+### POST new food
+POST {{hostname}}/food
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+{
+    "Nev":"Teszt Étel",
+    "Leiras":"A legfinomabb teszt étel",
+    "KepPath":"Somloi-galuska-scaled.jpg",
+    "Ar":850
+}
+
+### PATCH food
+PATCH  {{hostname}}/food/1
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+{
+    "Nev":"Teszt Húsleves",
+    "Leiras":"A legfinomabb teszt étel",
+    "KepPath":"husleves.jpg",
+    "Ar":1700
+}
+
+### DELETE food
+DELETE  {{hostname}}/food/37
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET all orders
+GET {{hostname}}/order
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET order 1
+GET {{hostname}}/order/1
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET order 3
+GET {{hostname}}/order/3
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET all customer by order false
+GET {{hostname}}/order/customer?isDone=false
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET all customer by order true
+GET {{hostname}}/order/customer?isDone=true
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET all food by customer 1
+GET {{hostname}}/order/food/1
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET all food by customer 3
+GET {{hostname}}/order/food/3
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET all customer
+GET {{hostname}}/customer
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET customer
+GET {{hostname}}/customer/1
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### GET customer
+GET {{hostname}}/customer/3
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+### PATCH customer 1 order status false
+PATCH {{hostname}}/customer/1
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+{
+    "Elkeszult": false
+}
+
+### PATCH customer 1 order status true
+PATCH {{hostname}}/customer/1
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+{
+    "Elkeszult": true
+}
+
+### PATCH customer 3 order status
+PATCH {{hostname}}/customer/3
+Authorization: Bearer {{token}}
+Content-type: "application/json; charset=UTF-8"
+
+{
+    "Elkeszult": false
+}
