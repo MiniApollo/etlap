@@ -3,6 +3,7 @@ package restapi
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -97,24 +98,46 @@ func PostFood(c *gin.Context) {
 		return
 	}
 
-	_, err := Db.Exec("INSERT INTO Etelek (Nev, Leiras, Kep, Ar) VALUES (?, ?, ?, ?)", newFood.Nev, newFood.Leiras, newFood.KepPath, newFood.Ar)
+	foodResult, err := Db.Exec("INSERT INTO Etelek (Nev, Leiras, Kep, Ar) VALUES (?, ?, ?, ?)", newFood.Nev, newFood.Leiras, newFood.KepPath, newFood.Ar)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
 	}
+	insertedId, err := foodResult.LastInsertId()
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	newFood.EtelID = int(insertedId)
+
 	c.IndentedJSON(http.StatusCreated, newFood)
 }
 
 // Módosít egy ételt ID alapján.
 func UpdateFood(c *gin.Context) {
+	var isFoodExists bool = false
+	err := Db.QueryRow("SELECT EXISTS(SELECT * FROM Etelek WHERE EtelID = ?)", c.Param("id")).Scan(&isFoodExists)
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	if !isFoodExists {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+		return
+	}
 	var newFood food
 	if err := c.BindJSON(&newFood); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	_, err = Db.Exec("UPDATE Etelek SET Nev=?, Leiras=?, Kep=?, Ar=? WHERE EtelID=?", newFood.Nev, newFood.Leiras, newFood.KepPath, newFood.Ar, c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
 
-	_, err := Db.Exec("UPDATE Etelek SET Nev=?, Leiras=?, Kep=?, Ar=? WHERE EtelID=?", newFood.Nev, newFood.Leiras, newFood.KepPath, newFood.Ar, c.Param("id"))
+	newFood.EtelID, err = strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
 		return
@@ -124,9 +147,14 @@ func UpdateFood(c *gin.Context) {
 
 // Kitöröl egy ételt ID alapján.
 func DeleteFood(c *gin.Context) {
-	_, err := Db.Exec("DELETE FROM Etelek WHERE EtelID=?", c.Param("id"))
+	foodResult, err := Db.Exec("DELETE FROM Etelek WHERE EtelID=?", c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+	rowsAffected, err := foodResult.RowsAffected()
+	if rowsAffected <= 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 	c.IndentedJSON(http.StatusCreated, c.Param("id"))
