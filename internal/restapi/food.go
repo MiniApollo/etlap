@@ -153,9 +153,13 @@ func DeleteFood(c *gin.Context) {
 		return
 	}
 	rowsAffected, err := foodResult.RowsAffected()
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
 	if rowsAffected <= 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
-	c.IndentedJSON(http.StatusCreated, c.Param("id"))
+	c.IndentedJSON(http.StatusOK, c.Param("id"))
 }
