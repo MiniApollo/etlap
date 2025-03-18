@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 <template>
     <div>
-        <ul class="flex gap-4 max-lg:gap-1 max-lg:flex-col md:justify-between">
+        <ul class="max-lg:mb-4 mb-2 flex gap-4 max-lg:gap-1 max-lg:flex-col md:justify-between">
             <li class="basis-1/6 text-xl max-md:text-2xl font-semibold overflow-auto">Név: <br class="max-lg:hidden">{{
                 customer.Nev }}</li>
             <li class="basis-1/5 text-xl overflow-auto">Email: <br class="max-lg:hidden">{{ customer.Email }}</li>
@@ -28,7 +28,7 @@ const props = defineProps<{
             </button>
         </ul>
         <ul>
-            <h2 class="mb-3 text-2xl font-semibold">Rendelés:</h2>
+            <h2 class="mb-1 text-2xl font-semibold">Rendelés:</h2>
             <li v-for="foodWithVolume in foodsByCustomer[index]">
                 <ul>
                     <li class="my-1 text-2xl inline m-1">{{ foodWithVolume.Volume }} {{ foodWithVolume.Food.Nev }}</li>
