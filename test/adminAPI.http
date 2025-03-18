@@ -39,7 +39,7 @@ Content-type: "application/json; charset=UTF-8"
 }
 
 ### DELETE food
-DELETE  {{hostname}}/food/37
+DELETE  {{hostname}}/food/1
 Authorization: Bearer {{token}}
 Content-type: "application/json; charset=UTF-8"
 
@@ -83,12 +83,12 @@ GET {{hostname}}/customer
 Authorization: Bearer {{token}}
 Content-type: "application/json; charset=UTF-8"
 
-### GET customer
+### GET customer 1
 GET {{hostname}}/customer/1
 Authorization: Bearer {{token}}
 Content-type: "application/json; charset=UTF-8"
 
-### GET customer
+### GET customer 3
 GET {{hostname}}/customer/3
 Authorization: Bearer {{token}}
 Content-type: "application/json; charset=UTF-8"
