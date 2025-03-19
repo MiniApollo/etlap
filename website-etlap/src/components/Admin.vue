@@ -116,7 +116,7 @@ async function postNewFood(food: any, requestType: string = "POST", etelID: stri
     if (!confirm("Biztosan feltöltöd?")) {
         return;
     }
-    const response = await fetch("/food/" + etelID, {
+    const response = await fetch("/food" + etelID, {
         method: requestType,
         headers: {
             'Authorization': 'Bearer ' + btoa(sessionStorage.getItem("adminToken") || "{}"),
