@@ -1,109 +1,83 @@
+# Étlap
+
 # Tartalomjegyzék
 
--  [Étlap Weboldal](#Étlap)
--  [Specifikáció](#Specifikáció)
-    -  [Funkciók](#Funkciók)
-    -  [Adatok](#Adatok)
--  [Fejlesztői Eszközök](#Fejlesztői-Eszközök)
--  [Fejlesztők](#Fejlesztők)
+- [Bevezetés](#Introduction)
+  - [Funkciók](#Features)
+- [Projekt struktúrája](#Project-Structure)
+- [Fejlesztői Eszközök](#Development-Tools)
+- [Fejlesztők](#Developers)
+- [Galéria](#Gallery)
 
-<a id="Étlap"></a>
+<a id="Introduction"></a>
+# Bevezetés
+Vizsgára fejlesztett, könnyen kezelhető, reszponzív, full-stack weboldal, ahol rendeléseket lehet leadni és a helyszínen átvenni.
 
-# Étlap Weboldal
+Vue-ban készült Single page applicaton (SPA), Go nyelven írt RESTful specifikációnak megfelelő API és MySQL alapú adatbázis.
 
-Egy weboldal, ahol ki lehet választani, milyen ételeket szeretne a vevő vásárolni és hozzá tudja adni egy listához, amiket meg tud rendelni. A rendelését a helyszínen át tudja venni.
+A projekt dokumentációja a "docs/Étlap Weboldal" fájlban található.
 
-
-<a id="Specifikáció"></a>
-
-# Specifikáció
-
-A vevő ki tudja választani egy listából, milyen ételeket akar vásárolni és azokat egy rendelésbe össze tudja gyűjteni, amit el tud küldeni szükséges adatok megadása után az étteremnek.
-
-
-<a id="Funkciók"></a>
-
+<a id="Features"></a>
 ## Funkciók
 
--   [X] Navigáció (Navbar)
--   [X] Ételek listája (Étlap)
--   [X] Rendelés megtekintése
--   [X] Rendelés leadása
-
+- [X] Navigáció (Navbar)
+- [X] Ételek listája (Étlap)
+- [X] Rendelés megtekintése
+- [X] Rendelés leadása
 
 ### Admin Funkciók:
 
--   [X] Ételek hozzáadása, módosítása és törlése
--   [X] Admin felület felhasználók rendelésének megtekintésére
+- [X] Ételek hozzáadása, módosítása és törlése
+- [X] Admin felület rendelések megtekintésére
 
+<a id="Project-Structure"></a>
+# Projekt struktúrája
+A következő GitHub repository alapján alakítottuk ki, amelyet a Go nyelv is javasol:
 
-<a id="Adatok"></a>
+https://github.com/golang-standards/project-layout
 
-## Adatok
+<a id="Development-Tools"></a>
+# Fejlesztői eszközök
+## Frontend
+- HTML CSS JavaScript
+- Tailwind: CSS keretrendszer
+- Vue.js: JavaScript keretrendszer
+- Node.js: JavaScript futtatási környezet: 18.3 vagy magasabb verzió
+## Backend
+- Go programozási nyelv:1.23.1 vagy magasabb verzió
+- Gin: HTTP web keretrendszer
+- Godotenv: .env változók beolvasása
+- Go-MySQL-Driver
+## Támogatott adatbázisok
+- MySQL: 8.0.37 vagy magasabb verzió
+- MariaDB: 10.6.20 vagy magasabb verzió
+## Verziókezelés
+- Git
+- Github
+## Szövegszerkesztő
+- Visual Studio Code
+- GNU Emacs
+## Operációs rendszer
+- Microsoft Windows 10
+- Gentoo GNU/Linux
+## Tesztelés
+- VSCode REST Client
 
+# Letöltés
+Github release-ben elérhető a futtatásra kész projekt Zip fájl letöltése.
 
-### Vásárlók adatai
+További információk a projekt dokumentációjában találhatók.
 
--   Név
--   Email
--   Telefonszám
--   ID: Primary Key
-
-
-### Rendelések (Kapcsoló tábla)
-
--   Vásárló ID: Foreign Key Rendelés
--   Étel ID: Foreign Key Étel
-
-
-### Ételek adatai
-
--   Név
--   Leírás
--   Kép
--   Ár
--   ID: Primary Key
-
-
-<a id="Fejlesztői-Eszközök"></a>
-
-# Fejlesztői Eszközök
-
-
-## Frontend:
-
--   HTML CSS JavaScript
--   Tailwind: CSS keretrendszer
--   Vue.js: JavaScript keretrendszer
-
-
-## Backend:
-
--   Go programozási nyelv
--   Gin: HTTP web keretrendszer
--   Godotenv: .env változok beolvasása
--   Go-MySQL-Driver
-
-## Adatbázis:
-
--   MySQL
-
-
-## Verziókezelés:
-
--   Git
--   Github
-
-
-<a id="Fejlesztők"></a>
-
+<a id="Developers"></a>
 # Fejlesztők
-
 13.D Szoftver vegyes
 
--   MiniApollo, SmarkPogany: Surmann Márk
--   BudaLevente: Buda Levente István
--   GyalogKakukk: Ócsai Márk
+- MiniApollo: Surmann Márk
+- BudaLevente: Buda Levente István
+- GyalogKakukk: Ócsai Márk
 
 ![etlapProjektGoVue](https://github.com/user-attachments/assets/7b4b702b-75de-49f6-824d-d1b6d5348dfc)
+
+<a id="Gallery"></a>
+# Galéria
 
