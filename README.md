@@ -1,4 +1,9 @@
+<div align="center">
+  
 # Étlap
+![Főoldal](https://github.com/user-attachments/assets/76c56a6b-71f5-40a3-8a8f-950156285f72)
+
+</div>
 
 # Tartalomjegyzék
 
@@ -80,4 +85,10 @@ További információk a projekt dokumentációjában találhatók.
 
 <a id="Gallery"></a>
 # Galéria
+
+![Ételek](https://github.com/user-attachments/assets/76528295-1a70-46e9-a498-40ce064ae91b)
+
+![Kosár](https://github.com/user-attachments/assets/10371fac-9462-45d6-a82a-f295cc2f3d0d)
+
+![Admin jelenlegi rendelések](https://github.com/user-attachments/assets/d57472a9-59e3-47fa-851d-a01880fd3466)
 
