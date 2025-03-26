@@ -71,6 +71,8 @@ https://github.com/golang-standards/project-layout
 # Letöltés
 Github release-ben elérhető a futtatásra kész projekt Zip fájl letöltése.
 
+A projekt forráskódja a main branch-ből letölthető.
+
 További információk a projekt dokumentációjában találhatók.
 
 <a id="Developers"></a>
